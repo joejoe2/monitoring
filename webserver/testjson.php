@@ -2,7 +2,7 @@
  $user="root";
  $pass="a43235167";
  $DBname="data";
- $link=new MySQLi($_SERVER['SERVER_NAME'],$GLOBALS['user'],$GLOBALS['pass'],$DBname);
+ $link=new MySQLi("localhost",$GLOBALS['user'],$GLOBALS['pass'],$DBname);
  if($link->connect_error){ echo "error!";}
  $result=$link->query("SELECT * from "."gateway01"." ORDER BY time DESC"); 
  $r1=$result->fetch_row();

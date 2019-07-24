@@ -9,7 +9,7 @@
  $time=$_POST['time'];
  $obj=$_POST['obj'];
 
- $link=new MySQLi($_SERVER['SERVER_NAME'],$GLOBALS['user'],$GLOBALS['pass'],$DBname);
+ $link=new MySQLi("localhost",$GLOBALS['user'],$GLOBALS['pass'],$DBname);
  if($link->connect_error){ echo "error!";}
  $s="INSERT INTO "."$target"."(id,status,time,value) VALUES('"."$gatewayid"."','"."$status"."','"."$time"."','"."$obj"."')";
 //  $link->query("set names utf8");
