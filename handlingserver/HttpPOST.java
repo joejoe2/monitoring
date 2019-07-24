@@ -43,7 +43,7 @@ public class HttpPOST {
     
      private static void sendPost() throws Exception {
 
-        String url = "http://localhost/commit.php";
+        String url = "http://showdata.nctu.me/commit.php";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
@@ -51,7 +51,7 @@ public class HttpPOST {
         con.setRequestMethod("POST");
 
         //String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
-        String json="[{\"id\": \"sensor01\", \"type\": \"tm\", \"value\": "+((new Random()).nextFloat()*100)+", \"status\": \"test\"}, {\"id\": \"sensor02\", \"type\": \"tm\", \"value\": 14, \"status\": \"test\"}]";
+        String json="[{\"id\": \"sensor01\", \"type\": \"tm\", \"value\": "+((new Random()).nextFloat()*100)+", \"status\": \"test\"}, {\"id\": \"sensor02\", \"type\": \"tm\", \"value\":"+((new Random()).nextFloat()*100)+", \"status\": \"test\"}]";
         String urlParameters ="target=gateway01&gatewayid=00&status=test&time="+LocalDateTime.now().toString()+"&obj="+json;
         //发送Post请求
         con.setDoOutput(true);
