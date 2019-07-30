@@ -6,7 +6,6 @@
 package simulategateways;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -49,25 +48,6 @@ public class SimulateGateways {
             }
         });
         timer1.start();
-        //
-//        Timer timer2=new Timer(5000,(e) -> {
-//            System.out.println("gataway02");
-//            try {
-//                Socket socket=new Socket(server, entry);
-//                OutputStream outputStream=socket.getOutputStream();
-//                PrintWriter printWriter=new PrintWriter(outputStream, true);
-//                String json="[{\"id\": \"sensor01\", \"type\": \"tm\", \"value\": "+(random.nextFloat()*100)+", \"status\": \"test\"}, {\"id\": \"sensor02\", \"type\": \"tm\", \"value\":"+(random.nextFloat()*100)+", \"status\": \"test\"}]";
-//                String urlParameters ="target=gateway01&gatewayid=00&status=test&time="+LocalDateTime.now().toString()+"&obj="+json;
-//                printWriter.println(urlParameters);
-//                printWriter.flush();
-//                printWriter.close();
-//                outputStream.close();
-//                socket.close();
-//            } catch (IOException ex) {
-//                Logger.getLogger(SimulateGateways.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        });
-//        timer2.start();
         JFrame frame=new JFrame();
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
