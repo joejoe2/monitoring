@@ -37,7 +37,7 @@ public class Processor {
                 
                 //process dataIN...
                 
-                console.append("process data => "+dataIN+" at "+LocalDateTime.now()+"\n");
+                //console.append("process data => "+dataIN+" at "+LocalDateTime.now()+"\n");
                 //add to analyze unit...
                 analyzeUnit.add(dataIN);
             }

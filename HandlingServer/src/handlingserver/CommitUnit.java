@@ -5,14 +5,11 @@
  */
 package handlingserver;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
-import java.util.Random;
 import javax.swing.JTextArea;
 
 /**
@@ -22,10 +19,12 @@ import javax.swing.JTextArea;
 public class CommitUnit {
 
     JTextArea console;
+    RecordLog recordLog;
     LinkedList<String> linkedList;
 
-    public CommitUnit(String addr, JTextArea console) {
+    public CommitUnit(String addr, JTextArea console,RecordLog recordLog) {
         this.console = console;
+        this.recordLog=recordLog;
         console.append("CommitUnit start at " + LocalDateTime.now() + "\n");
         linkedList = new LinkedList<>();
     }
@@ -54,7 +53,7 @@ public class CommitUnit {
         String url = "http://showdata.nctu.me/commit.php";
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
+        con.setConnectTimeout(5000);
         //添加请求头
         con.setRequestMethod("POST");
 
@@ -69,7 +68,8 @@ public class CommitUnit {
         wr.close();
 
         int responseCode = con.getResponseCode();
-        console.append("commit data => "+data+" at "+LocalDateTime.now()+" wtih response code="+responseCode);
+        console.append("commit data => "+data+" at "+LocalDateTime.now()+" wtih response code="+responseCode+"\n");
+        recordLog.append(data+"\n");
 //        System.out.println("\nSending 'POST' request to URL : " + url);
 //        System.out.println("Post parameters : " + urlParameters);
 //        System.out.println("Response Code : " + responseCode);

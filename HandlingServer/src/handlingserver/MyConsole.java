@@ -8,10 +8,7 @@ package handlingserver;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JTextArea;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 
 /**
@@ -35,7 +32,8 @@ public class MyConsole extends JTextArea{
         
     }
     void startLog(String datetime){
-        File file=new File(datetime.replaceAll(":","-")+".txt");
+        clear();
+        File file=new File("console "+datetime.replaceAll(":","-")+".txt");
         try {
             printWriter=new PrintWriter(file);
             printWriter.flush();
@@ -47,5 +45,8 @@ public class MyConsole extends JTextArea{
         printWriter.flush();
         printWriter.close();
         System.gc();
+    }
+    void clear(){
+        this.setText(null);
     }
 }

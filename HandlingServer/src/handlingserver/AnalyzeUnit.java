@@ -36,7 +36,7 @@ public class AnalyzeUnit {
                 String dataIN=linkedList.pollFirst();
                 //
                 dataIN=dataIN.replaceAll("test","testing");
-                console.append("analyze data => "+dataIN+" at "+LocalDateTime.now()+"\n");
+                //console.append("analyze data => "+dataIN+" at "+LocalDateTime.now()+"\n");
                 //
                 commitUnit.add(dataIN);
                 

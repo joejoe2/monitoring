@@ -6,8 +6,13 @@
 package handlingserver;
 
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,12 +35,15 @@ public class HandlingServer extends JFrame {
     JTextField input_commit;
     JButton startBtn;
     MyConsole console;
+    RecordLog recordLog;
 
     Receiver receiver;
     Processor processor;
     AnalyzeUnit analyzeUnit;
     CommitUnit commitUnit;
 
+    String[] defaultStr; 
+    
     boolean isruning = false;
 
     /**
@@ -47,6 +55,9 @@ public class HandlingServer extends JFrame {
     }
 
     public HandlingServer() {
+        //
+        defaultStr=new String[0];
+        readSetting();
         //component
         analyzeLabel = new JLabel("analyze address");
         analyzeLabel.setSize(150, 25);
@@ -80,27 +91,29 @@ public class HandlingServer extends JFrame {
                 isruning = true;
                 //start log
                 console.startLog(LocalDateTime.now().toString());
-                
+                recordLog=new RecordLog();
+                recordLog.startLog(LocalDateTime.now().toString());
                 //initialize component
-                receiver = new Receiver(console);
+                receiver = new Receiver(console,defaultStr);
                 processor = new Processor(console);
                 analyzeUnit = new AnalyzeUnit(analyzeAddr, console);
-                commitUnit = new CommitUnit(commitAddr, console);
-                
+                commitUnit = new CommitUnit(commitAddr, console,recordLog);
+
                 //bind component
                 receiver.bind(processor);
                 processor.bind(analyzeUnit);
                 analyzeUnit.bind(commitUnit);
                 commitUnit.bind();
-
+                
                 startBtn.setText("stop server");
             } else {
                 isruning = false;
                 //stop coponent
                 receiver.stop();
                 startBtn.setText("start server");
-                console.append("server try to start at " +LocalDateTime.now());
+                console.append("server try to stop at " + LocalDateTime.now()+"\n");
                 console.stopLog();
+                recordLog.stopLog();
             }
         });
         this.add(startBtn);
@@ -119,23 +132,36 @@ public class HandlingServer extends JFrame {
         this.setSize(500, 500);
         this.setLayout(null);
         this.setVisible(true);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        //console.append("5555\n");
-    }
-    
-    void readSetting(){
-        
-        try {
-            File file=new File("seting.ini");
-            Scanner scanner=new Scanner(file);
-            scanner.nextLine();
-            while(scanner.hasNextLine()){
-                scanner.nextLine();
+        //this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                if(isruning){
+                isruning = false;
+                //stop coponent
+                receiver.stop();
+                startBtn.setText("start server");
+                console.append("server try to stop at " + LocalDateTime.now()+"\n");
+                console.stopLog();
+                recordLog.stopLog();
+                }
+                System.exit(0);
             }
-            scanner.close();
+        });
+    }
+
+    void readSetting() {
+
+        try {
+            File file = new File("setting.ini");
+            Scanner scanner=new Scanner(file);
+            ArrayList<String> list=new ArrayList<>();
+            while(scanner.hasNextLine()){
+                list.add(scanner.nextLine());
+            }
+            defaultStr=list.toArray(defaultStr);
         } catch (Exception ex) {
             Logger.getLogger(HandlingServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 }
