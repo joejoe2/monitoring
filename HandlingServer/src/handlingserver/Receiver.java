@@ -34,7 +34,7 @@ public class Receiver {
     String[] pre;
     String[] next;
     Timer checker;
-    int timeout=10000;
+    int timeout=10000;//10s
 
     public Receiver(JTextArea console, String[] defaultStr) {
         this.console = console;
@@ -77,8 +77,8 @@ public class Receiver {
                             pre[i] = next[i];
                         } else {
                             LocalDateTime now=LocalDateTime.now();
-                            processor.add(defaultStr[i].replaceFirst("&time&","&time="+now+"&"));
-                            console.append(defaultStr[i].split("&")[0]+ " is disconnected at " + now + "\n");
+                            processor.add(defaultStr[i].replaceFirst("&time&","&time="+now+"&").replace("\"value\":0","\"value\":\"unknown\""));
+                            console.append(defaultStr[i].split("&")[0]+ " is no response at " + now + "\n");
                         }
                     }
                 }

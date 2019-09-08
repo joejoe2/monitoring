@@ -8,6 +8,7 @@ package handlingserver;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -16,12 +17,20 @@ import java.io.PrintWriter;
 public class RecordLog {
      File file;
      PrintWriter printWriter;
+     int line=0;
+     int limit=1000;
     public RecordLog() {
     }
-    public void append(String str) {
-        printWriter.append(str);  
+    public synchronized void append(String str) {
+        printWriter.append(str);
+        line++;
+        if(line>=limit){
+            stopLog();
+            startLog(LocalDateTime.now().toString());
+            line=0;
+        }
     }
-    void startLog(String datetime){
+    synchronized void startLog(String datetime){
         File file=new File("record "+datetime.replaceAll(":","-")+".txt");
         try {
             printWriter=new PrintWriter(file);
@@ -30,7 +39,7 @@ public class RecordLog {
             ex.printStackTrace();
         }
     }
-    void stopLog(){
+    synchronized void stopLog(){
         printWriter.flush();
         printWriter.close();
         System.gc();

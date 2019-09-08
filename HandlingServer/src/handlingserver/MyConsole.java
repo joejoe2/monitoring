@@ -8,6 +8,7 @@ package handlingserver;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
 
@@ -18,7 +19,8 @@ import javax.swing.text.DefaultCaret;
 public class MyConsole extends JTextArea{
     File file;
     PrintWriter printWriter;
-
+    int line=0;
+    int limit=1000;
     public MyConsole() {
         DefaultCaret caret = (DefaultCaret)getCaret();
         caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
@@ -26,12 +28,18 @@ public class MyConsole extends JTextArea{
     
     
     @Override
-    public void append(String str) {
+    public synchronized void append(String str) {
         super.append(str); //To change body of generated methods, choose Tools | Templates.
         printWriter.append(str);
-        
+        line++;
+        if(line>=limit){
+            stopLog();
+            startLog(LocalDateTime.now().toString());
+            line=0;
+            clear();
+        }
     }
-    void startLog(String datetime){
+    synchronized void startLog(String datetime){
         clear();
         File file=new File("console "+datetime.replaceAll(":","-")+".txt");
         try {
@@ -41,7 +49,7 @@ public class MyConsole extends JTextArea{
             ex.printStackTrace();
         }
     }
-    void stopLog(){
+    synchronized void stopLog(){
         printWriter.flush();
         printWriter.close();
         System.gc();

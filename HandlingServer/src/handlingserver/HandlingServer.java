@@ -8,9 +8,7 @@ package handlingserver;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -42,8 +40,8 @@ public class HandlingServer extends JFrame {
     AnalyzeUnit analyzeUnit;
     CommitUnit commitUnit;
 
-    String[] defaultStr; 
-    
+    String[] defaultStr;
+
     boolean isruning = false;
 
     /**
@@ -51,12 +49,12 @@ public class HandlingServer extends JFrame {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        new HandlingServer();
+        HandlingServer handlingServer = new HandlingServer();
     }
 
     public HandlingServer() {
         //
-        defaultStr=new String[0];
+        defaultStr = new String[0];
         readSetting();
         //component
         analyzeLabel = new JLabel("analyze address");
@@ -91,27 +89,27 @@ public class HandlingServer extends JFrame {
                 isruning = true;
                 //start log
                 console.startLog(LocalDateTime.now().toString());
-                recordLog=new RecordLog();
+                recordLog = new RecordLog();
                 recordLog.startLog(LocalDateTime.now().toString());
                 //initialize component
-                receiver = new Receiver(console,defaultStr);
+                receiver = new Receiver(console, defaultStr);
                 processor = new Processor(console);
                 analyzeUnit = new AnalyzeUnit(analyzeAddr, console);
-                commitUnit = new CommitUnit(commitAddr, console,recordLog);
+                commitUnit = new CommitUnit(commitAddr, console, recordLog);
 
                 //bind component
                 receiver.bind(processor);
                 processor.bind(analyzeUnit);
                 analyzeUnit.bind(commitUnit);
                 commitUnit.bind();
-                
+
                 startBtn.setText("stop server");
             } else {
                 isruning = false;
                 //stop coponent
                 receiver.stop();
                 startBtn.setText("start server");
-                console.append("server try to stop at " + LocalDateTime.now()+"\n");
+                console.append("server try to stop at " + LocalDateTime.now() + "\n");
                 console.stopLog();
                 recordLog.stopLog();
             }
@@ -135,14 +133,14 @@ public class HandlingServer extends JFrame {
         //this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
-                if(isruning){
-                isruning = false;
-                //stop coponent
-                receiver.stop();
-                startBtn.setText("start server");
-                console.append("server try to stop at " + LocalDateTime.now()+"\n");
-                console.stopLog();
-                recordLog.stopLog();
+                if (isruning) {
+                    isruning = false;
+                    //stop coponent
+                    receiver.stop();
+                    startBtn.setText("start server");
+                    console.append("server try to stop at " + LocalDateTime.now() + "\n");
+                    console.stopLog();
+                    recordLog.stopLog();
                 }
                 System.exit(0);
             }
@@ -153,12 +151,15 @@ public class HandlingServer extends JFrame {
 
         try {
             File file = new File("setting.ini");
-            Scanner scanner=new Scanner(file);
-            ArrayList<String> list=new ArrayList<>();
-            while(scanner.hasNextLine()){
-                list.add(scanner.nextLine());
+            Scanner scanner = new Scanner(file);
+            ArrayList<String> list = new ArrayList<>();
+            while (scanner.hasNextLine()) {
+                String de = scanner.nextLine();
+                if (de.startsWith("target=devices")) {
+                    list.add(de);
+                }
             }
-            defaultStr=list.toArray(defaultStr);
+            defaultStr = list.toArray(defaultStr);
         } catch (Exception ex) {
             Logger.getLogger(HandlingServer.class.getName()).log(Level.SEVERE, null, ex);
         }
