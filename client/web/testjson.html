@@ -29,19 +29,23 @@
     <script>
         //global var
         let webserver="http://showdata.nctu.me/testjson.php";
+        if(location.protocol=="https:"){
+            webserver="https://showdata.nctu.me/testjson.php";
+        }
+
         let normalColor='#80CAF6';
         let wraningColor="red";
-        
-        //gateway01
+        let unknown=0;//unknown value
+        //devices01
         {
             let sensorNum=2;//sensor num
             let delay=5000;//refresh rate in ms
             let tarray = new Array();//time array
             let darray = new Array();//data array
             let graphSet=["graph1","graph2"];
-            let titleSet=["gateway01-sensor01","gateway01-sensor02"];
+            let titleSet=["devices01-sensor01","devices01-sensor02"];
             let pastLimit=100;//how many points can look back
-
+            let target="devices01"
             
 
             //call refresh in fixed time
@@ -73,8 +77,8 @@
                         console.log(this.responseText);
                         let ar = this.responseText.split(";");
 
-                        let gatewayid = ar[0];//gatewayid set to 0
-                        let gatewaystatus = ar[1];//gatewaystatus
+                        let devicesid = ar[0];//devicesid set to 0
+                        let devicesstatus = ar[1];//devicesstatus
                         let time = new Date(ar[2]);//time
                         let obj = JSON.parse(ar[3]);//json value
                         console.log(new Date(ar[2]).toString());
@@ -90,8 +94,12 @@
 
                             for (let i = 0; i < obj.length; i++) {//loop dif sensor graph
                                 //append new data
+                                let value = obj[i].value;
+                                if(value=="unknown"){
+                                    value=unknown
+                                }
                                 tarray[i].unshift(time);
-                                darray[i].unshift(obj[i].value);
+                                darray[i].unshift(value);
                                 
                                 let color =normalColor;//set line color
 
@@ -100,7 +108,7 @@
                                     x: [tarray[i]],
                                     y: [darray[i]],
                                     line: { color: color },
-                                    text:[(gatewaystatus=="unavailable"?gatewaystatus:(obj[i].status))],
+                                    text:[(devicesstatus=="unavailable"?devicesstatus:(obj[i].status))],
                                     textposition:"top"
                                 };
 
@@ -117,7 +125,7 @@
                                         type: 'date',
                                         range: [olderTime, futureTime]
                                     },
-                                    title:titleSet[i]+"<br>"+(gatewaystatus=="unavailable"?gatewaystatus:(obj[i].status))
+                                    title:titleSet[i]+"<br>"+(devicesstatus=="unavailable"?devicesstatus:(obj[i].status))
                                 }
                                 //set view point and update data
                                 Plotly.relayout(graphSet[i], minuteView);
@@ -134,7 +142,7 @@
                 });
 
                 //send http get request to webserver
-                request.open("GET", webserver, true);
+                request.open("GET", webserver+"?target="+target, true);
                 request.send();
             }
         }
