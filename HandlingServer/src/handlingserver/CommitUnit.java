@@ -21,37 +21,148 @@ public class CommitUnit {
     JTextArea console;
     RecordLog recordLog;
     LinkedList<String> linkedList;
+    String webserver = "";
+    String db = "";
+    String bot = "";
+    String firebase = "";
 
-    public CommitUnit(String addr, JTextArea console,RecordLog recordLog) {
+    public CommitUnit(JTextArea console, RecordLog recordLog) {
         this.console = console;
-        this.recordLog=recordLog;
-        console.append("CommitUnit start at " + LocalDateTime.now() + "\n");
+        this.recordLog = recordLog;
+
         linkedList = new LinkedList<>();
     }
 
-    void bind() {
-
+    void bind(String webserver, String db, String bot, String firebase) {
+        this.webserver = webserver;
+        this.db = db;
+        this.bot = bot;
+        this.firebase = firebase;
+        console.append("CommitUnit start at " + LocalDateTime.now() + "\n");
     }
 
     synchronized void add(String data) {
         new Thread(() -> {
             linkedList.add(data);
             if (!linkedList.isEmpty()) {
-                String dataIN=linkedList.pollFirst();
+                String dataIN = linkedList.pollFirst();
                 try {
-                    sendPost(data);
+                    send_to_webservser(data);
                 } catch (Exception e) {
-                    console.append(e.toString()+"\n");
+                    console.append(e.toString() + "\n");
                 }
-                
+
             }
         }).start();
     }
-    
-    private void sendPost(String data) throws Exception {
 
-        String url = "http://showdata.nctu.me/commit.php";
-        URL obj = new URL(url);
+    void update_websever_cfg(String[] data) {
+        if (webserver.equals("")) {
+            return;
+        }
+        //clear
+        try {
+            URL obj = new URL(webserver + "/clear_devices_cfg.php");
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setConnectTimeout(5000);
+            //添加请求头
+            con.setRequestMethod("POST");
+            int responseCode = con.getResponseCode();
+            console.append("init websever cfg at " + LocalDateTime.now() + " wtih response code=" + responseCode + "\n");
+        } catch (Exception ex) {
+            console.append(ex + "\n");
+            return;
+        }
+        int index=0;
+        //update
+        for (String cfg : data) {
+            try {
+                URL obj = new URL(webserver + "/set_devices_cfg.php");
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                con.setConnectTimeout(5000);
+                //添加请求头
+                con.setRequestMethod("POST");
+
+                //发送Post请求
+                con.setDoOutput(true);
+                DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+                wr.writeBytes(cfg);
+                wr.flush();
+                wr.close();
+
+                int responseCode = con.getResponseCode();
+                console.append("update websever cfg("+(++index)+"/"+data.length+") at " + LocalDateTime.now() + " wtih response code=" + responseCode + "\n");
+                
+            } catch (Exception ex) {
+                console.append(ex + "\n");
+                break;
+            }
+        }
+
+    }
+
+    void update_db_cfg(String[] data) {
+        if (db.equals("")) {
+            return;
+        }
+        //clear
+        try {
+            URL obj = new URL(db + "clear_devices_cfg.php");
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setConnectTimeout(5000);
+            //添加请求头
+            con.setRequestMethod("POST");
+            int responseCode = con.getResponseCode();
+            console.append("init db cfg at " + LocalDateTime.now() + " wtih response code=" + responseCode + "\n");
+        } catch (Exception ex) {
+            console.append(ex + "\n");
+            return;
+        }
+        int index=0;
+        for (String cfg : data) {
+
+            //update
+            try {
+                URL obj = new URL(db + "set_devices_cfg.php");
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                con.setConnectTimeout(5000);
+                //添加请求头
+                con.setRequestMethod("POST");
+
+                //发送Post请求
+                con.setDoOutput(true);
+                DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+                wr.writeBytes(cfg);
+                wr.flush();
+                wr.close();
+
+                int responseCode = con.getResponseCode();
+                console.append("update db cfg("+(++index)+"/"+data.length+") at "+ LocalDateTime.now() + " wtih response code=" + responseCode + "\n");
+                
+            } catch (Exception ex) {
+                console.append(ex + "\n");
+                break;
+            }
+        }
+    }
+
+    void send_to_db(String data) {
+        if (db.equals("")) {
+            return;
+        }
+    }
+
+    void send_to_bot(String data) {
+        if (bot.equals("")) {
+            return;
+        }
+    }
+
+    void send_to_webservser(String data) throws Exception {
+        if (webserver.equals("")) {
+            return;
+        }
+        URL obj = new URL(webserver+"/commit.php");
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setConnectTimeout(5000);
         //添加请求头
@@ -65,22 +176,8 @@ public class CommitUnit {
         wr.close();
 
         int responseCode = con.getResponseCode();
-        console.append("commit data => "+data+" at "+LocalDateTime.now()+" wtih response code="+responseCode+"\n");
-        recordLog.append(data+"\n");
-//        System.out.println("\nSending 'POST' request to URL : " + url);
-//        System.out.println("Post parameters : " + urlParameters);
-//        System.out.println("Response Code : " + responseCode);
-//        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-//        String inputLine;
-//        StringBuffer response = new StringBuffer();
-//
-//        while ((inputLine = in.readLine()) != null) {
-//            response.append(inputLine);
-//        }
-//        in.close();
-//
-//        //打印结果
-//        System.out.println(response.toString());
+        console.append("commit data => " + data + " at " + LocalDateTime.now() + " wtih response code=" + responseCode + "\n");
+        recordLog.append(data + "\n");
 
     }
 }

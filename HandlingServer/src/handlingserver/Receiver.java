@@ -40,7 +40,7 @@ public class Receiver {
         this.console = console;
         this.defaultStr = defaultStr;
         LocalDateTime now = LocalDateTime.now();
-        console.append("Receiver start at " + now + "\n");
+        
         pre = new String[defaultStr.length];
         next = new String[defaultStr.length];
         gateways=new HashMap<>();
@@ -66,6 +66,7 @@ public class Receiver {
         isruning = true;
         main();
         checkTimeOut();
+        console.append("Receiver start at " + LocalDateTime.now() + "\n");
     }
 
     void checkTimeOut() {

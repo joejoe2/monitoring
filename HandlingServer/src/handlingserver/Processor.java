@@ -21,12 +21,13 @@ public class Processor {
 
     public Processor(JTextArea console) {
         this.console = console;
-        console.append("Processor start at " + LocalDateTime.now() + "\n");
+        
         linkedList = new LinkedList<>();
     }
 
     void bind(AnalyzeUnit analyzeUnit) {
         this.analyzeUnit = analyzeUnit;
+        console.append("Processor start at " + LocalDateTime.now() + "\n");
     }
 
     synchronized void add(String data) {
