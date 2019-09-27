@@ -7,7 +7,6 @@ package handlingserver;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import javax.swing.JTextArea;
 
 /**
@@ -17,14 +16,14 @@ import javax.swing.JTextArea;
 public class AnalyzeUnit {
 
     JTextArea console;
-    LinkedList<String> linkedList;
+
     CommitUnit commitUnit;
     ArrayList<DataWindow> windows;
-    
+
     public AnalyzeUnit(ArrayList<DataWindow> windows, JTextArea console) {
         this.console = console;
-        this.windows=windows;
-        linkedList = new LinkedList<>();
+        this.windows = windows;
+
     }
 
     void bind(CommitUnit commitUnit) {
@@ -32,26 +31,25 @@ public class AnalyzeUnit {
         console.append("AnalyzeUnit start at " + LocalDateTime.now() + "\n");
     }
 
-    synchronized void add(String data) {
-        new Thread(() -> {
-            linkedList.add(data);
-            if (!linkedList.isEmpty()) {
-                String dataIN=linkedList.pollFirst();
-                //
-                String ID=dataIN.substring(dataIN.indexOf("devicesid=")+10, dataIN.indexOf("&status"));
-                if(!dataIN.contains("unavailable")){
-                for (DataWindow window : windows) {
-                    if(window.devicesID.equals(ID)){
-                        dataIN=dataIN.substring(0,dataIN.indexOf("obj=")+4)+window.evaluate(dataIN.substring(dataIN.indexOf("obj=")+4));
-                        break;
-                    }
+    void add(String data) {
+        //new Thread(() -> {
+
+            String dataIN = data;
+            String ID = dataIN.substring(dataIN.indexOf("devicesid=") + 10, dataIN.indexOf("&status"));
+            String msg = "";
+            for (DataWindow window : windows) {
+                if (window.devicesID.equals(ID)) {//if match defined
+                    //get evaluated result
+                    String result = window.evaluate(dataIN.substring(dataIN.indexOf("obj=") + 4), !dataIN.contains("unavailable"));
+                    msg = result.split("&")[1].split("=")[1];
+                    dataIN = dataIN.substring(0, dataIN.indexOf("obj=") + 4) + result.split("&")[0];
+
+                    //send data , msg
+                    commitUnit.add(dataIN, msg);
+                    break;
                 }
-                }
-                //console.append("analyze data => "+dataIN+" at "+LocalDateTime.now()+"\n");
-                //
-                commitUnit.add(dataIN);
-                
             }
-        }).start();
+
+        //}).start();
     }
 }

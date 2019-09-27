@@ -12,7 +12,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,13 +28,15 @@ import javax.swing.JTextField;
 public class HandlingServer extends JFrame {
 
     String analyzeAddr;
-    String webserver = "http://showdata.nctu.me/webserver/";
-    String db = "http://showdata.nctu.me/db/";
+    String webserver = "http://showdata.nctu.me/webserver";
+    String db = "http://showdata.nctu.me/db";
     String bot = "";
     String firebase = "";
-    JLabel webserver_label, db_label;
+    JLabel webserver_label, db_label, bot_label, firebase_label;
     JTextField input_websever;
     JTextField input_db;
+    JTextField input_bot;
+    JTextField input_firebase;
     JButton startBtn;
     MyConsole console;
     RecordLog recordLog;
@@ -58,6 +59,7 @@ public class HandlingServer extends JFrame {
     }
 
     public HandlingServer() {
+
         //
         defaultStr = new String[0];
 
@@ -70,37 +72,67 @@ public class HandlingServer extends JFrame {
 
         db_label = new JLabel("db address : ");
         db_label.setSize(150, 25);
-        db_label.setLocation(0, 70);
+        db_label.setLocation(0, 60);
         db_label.setFont(new Font("", 0, 15));
         this.add(db_label);
 
+        bot_label = new JLabel("bot address : ");
+        bot_label.setSize(150, 25);
+        bot_label.setLocation(0, 110);
+        bot_label.setFont(new Font("", 0, 15));
+        this.add(bot_label);
+
+        firebase_label = new JLabel("firebase address : ");
+        firebase_label.setSize(150, 25);
+        firebase_label.setLocation(0, 160);
+        firebase_label.setFont(new Font("", 0, 15));
+        this.add(firebase_label);
+
         input_websever = new JTextField();
-        input_websever.setSize(150, 50);
+        input_websever.setSize(300, 50);
         input_websever.setLocation(150, 0);
         input_websever.setText(webserver);
         this.add(input_websever);
 
         input_db = new JTextField();
-        input_db.setSize(150, 50);
+        input_db.setSize(300, 50);
         input_db.setLocation(150, 50);
         input_db.setText(db);
         this.add(input_db);
 
+        input_bot = new JTextField();
+        input_bot.setSize(300, 50);
+        input_bot.setLocation(150, 100);
+        input_bot.setText(bot);
+        this.add(input_bot);
+
+        input_firebase = new JTextField();
+        input_firebase.setSize(300, 50);
+        input_firebase.setLocation(150, 150);
+        input_firebase.setText(firebase);
+        this.add(input_firebase);
+
         startBtn = new JButton("start server");
         startBtn.setSize(150, 50);
-        startBtn.setLocation(300, 0);
+        startBtn.setLocation(500, 0);
         startBtn.addActionListener((e) -> {
-            if (!isruning) {
+            if (!isruning) {//if is not runing
+                
+                //read setting
                 readSetting();
+
                 //get address
                 webserver = input_websever.getText().trim();
                 db = input_db.getText().trim();
+
                 //set running flag
                 isruning = true;
+
                 //start log
                 console.startLog(LocalDateTime.now().toString());
                 recordLog = new RecordLog();
                 recordLog.startLog(LocalDateTime.now().toString());
+
                 //initialize component
                 receiver = new Receiver(console, defaultStr);
                 processor = new Processor(console);
@@ -111,19 +143,15 @@ public class HandlingServer extends JFrame {
                 receiver.bind(processor);
                 processor.bind(analyzeUnit);
                 analyzeUnit.bind(commitUnit);
-                commitUnit.bind(webserver, db, bot, firebase);
-                //update websever config
-                commitUnit.update_websever_cfg(defaultStr);
-                //update db config
-                commitUnit.update_db_cfg(defaultStr);
+                commitUnit.bind(webserver, db, bot, firebase, defaultStr);
 
-                //
+                //change start/atop button text
                 startBtn.setText("stop server");
-            } else {
-                isruning = false;
-                //stop coponent
-                receiver.stop();
-                startBtn.setText("start server");
+            } else {//if is runing
+
+                isruning = false;//clear start/stop button flag
+                receiver.stop();//stop coponent
+                startBtn.setText("start server");//change start/atop button text
                 console.append("server try to stop at " + LocalDateTime.now() + "\n");
                 console.stopLog();
                 recordLog.stopLog();
@@ -131,7 +159,7 @@ public class HandlingServer extends JFrame {
         });
         this.add(startBtn);
 
-        console = new MyConsole();
+        console = new MyConsole(1000, 50);
         console.setSize(680, 500);
         console.setAutoscrolls(true);
         console.setLineWrap(true);

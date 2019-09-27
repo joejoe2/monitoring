@@ -6,7 +6,6 @@
 package handlingserver;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
 import javax.swing.JTextArea;
 
 /**
@@ -16,13 +15,12 @@ import javax.swing.JTextArea;
 public class Processor {
 
     JTextArea console;
-    LinkedList<String> linkedList;
+
     AnalyzeUnit analyzeUnit;
 
     public Processor(JTextArea console) {
         this.console = console;
-        
-        linkedList = new LinkedList<>();
+
     }
 
     void bind(AnalyzeUnit analyzeUnit) {
@@ -30,18 +28,16 @@ public class Processor {
         console.append("Processor start at " + LocalDateTime.now() + "\n");
     }
 
-    synchronized void add(String data) {
-        new Thread(() -> {
-            linkedList.add(data);
-            if (!linkedList.isEmpty()) {
-                String dataIN = linkedList.pollFirst();
-                
-                //process dataIN...
-                
-                //console.append("process data => "+dataIN+" at "+LocalDateTime.now()+"\n");
-                //add to analyze unit...
-                analyzeUnit.add(dataIN);
-            }
-        }).start();
+    void add(String data) {
+        //new Thread(() -> {
+
+            String dataIN = data;
+
+            //process dataIN...
+            //console.append("process data => "+dataIN+" at "+LocalDateTime.now()+"\n");
+            //add to analyze unit...
+            analyzeUnit.add(dataIN);
+
+        //}).start();
     }
 }
