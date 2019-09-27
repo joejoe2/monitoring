@@ -12,16 +12,15 @@
 
  $link=new MySQLi("localhost",$GLOBALS['user'],$GLOBALS['pass'],$DBname);
  if($link->connect_error){ echo "error!";}
- $s="INSERT INTO "."$target"."(id,status,time,value) VALUES('"."$devicesid"."','"."$status"."','"."$time"."','"."$obj"."')";
+  
+ $array=explode("-",$time);
+ $year=$array[0];
+ $month=$array[1];
+ $day=explode("T",$array[2])[0];
+ $time=explode("T",$array[2])[1];
+
+ $s="INSERT INTO "."$target"."(id,status,year,month,day,time,value) VALUES('"."$devicesid"."','"."$status"."','"."$year"."','"."$month"."','"."$day"."','"."$time"."','"."$obj"."')";
 //  $link->query("set names utf8");
   $link->query($s);
   
-  $c=$link->query("SELECT COUNT(*) FROM "."$target"."")->fetch_row();
-  
-    $result=$link->query("SELECT * from "."$target"." ORDER BY time"); 
-    $r1=$result->fetch_row();
-    $link->query("DELETE FROM "."$target"." WHERE time='"."$r1[2]"."'");
-    //echo "del".$r1[2];
-  
-  //echo "$c[0]";
 ?>
