@@ -2,7 +2,7 @@ import socket
 import aes
 
 entry = "entry.showdata.nctu.me"
-port = 5000
+port = 6000
 key = "aa43235167123456"
 valid = "validate code is dmd5464fas4e629DF"
 
