@@ -2,7 +2,7 @@
 $user="root";
 $pass="a43235167";
 $DBname="data";
-$table="devices_config";
+$table="devices_cfg";
 
 $target=$_POST['target'];
 $devicesid=$_POST['devicesid'];

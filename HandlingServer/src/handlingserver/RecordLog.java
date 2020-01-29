@@ -19,18 +19,24 @@ public class RecordLog {
      PrintWriter printWriter;
      int line=0;
      int limit=1000;
+     boolean enable;
     public RecordLog() {
+        
     }
     public synchronized void append(String str) {
+        if(enable)
         printWriter.append(str);
         line++;
         if(line>=limit){
             stopLog();
-            startLog(LocalDateTime.now().toString());
+            startLog(LocalDateTime.now().toString(),this.enable);
             line=0;
         }
     }
-    synchronized void startLog(String datetime){
+    synchronized void startLog(String datetime,boolean enable){
+        this.enable=enable;
+        if(!this.enable)
+            return;
         File file=new File("record "+datetime.replaceAll(":","-")+".txt");
         try {
             printWriter=new PrintWriter(file);
@@ -40,6 +46,8 @@ public class RecordLog {
         }
     }
     synchronized void stopLog(){
+        if(!enable)
+            return;
         printWriter.flush();
         printWriter.close();
         System.gc();

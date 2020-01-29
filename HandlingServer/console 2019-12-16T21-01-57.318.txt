@@ -1,0 +1,10 @@
+Receiver start at 2019-12-16T21:01:58.043
+Processor start at 2019-12-16T21:01:58.048
+AnalyzeUnit start at 2019-12-16T21:01:58.049
+CommitUnit start at 2019-12-16T21:01:58.052
+javax.net.ssl.SSLHandshakeException: java.security.cert.CertificateException: No name matching web.showdata.nctu.me found
+target=devices01 is no response at 2019-12-16T21:02:18.044
+target=devices02 is no response at 2019-12-16T21:02:18.046
+javax.net.ssl.SSLHandshakeException: java.security.cert.CertificateException: No name matching web.showdata.nctu.me found
+javax.net.ssl.SSLHandshakeException: java.security.cert.CertificateException: No name matching web.showdata.nctu.me found
+server try to stop at 2019-12-16T21:02:24.086

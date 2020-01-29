@@ -18,26 +18,36 @@ public class Processor {
 
     AnalyzeUnit analyzeUnit;
 
-    public Processor(JTextArea console) {
+    /**
+     * init Processor unit
+     * @param console MyConsole obj
+     */
+    public Processor(MyConsole console) {
         this.console = console;
-
     }
 
-    void bind(AnalyzeUnit analyzeUnit) {
+    /**
+     * bind analyzeUnit to Processor
+     * @param analyzeUnit next pipeline component
+     */
+    public void bind(AnalyzeUnit analyzeUnit) {
         this.analyzeUnit = analyzeUnit;
         console.append("Processor start at " + LocalDateTime.now() + "\n");
     }
 
-    void add(String data) {
-        //new Thread(() -> {
+    /**
+     * input process data and pass to next pipeline component
+     * @param data input
+     */
+    public void add(String data) {
+        Pool.execute(() -> {//this thread is for all following pipeline components to work
 
             String dataIN = data;
 
             //process dataIN...
-            //console.append("process data => "+dataIN+" at "+LocalDateTime.now()+"\n");
-            //add to analyze unit...
+            //pass to analyze unit
             analyzeUnit.add(dataIN);
 
-        //}).start();
+        });
     }
 }

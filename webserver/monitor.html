@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+            background: url('thumb-1920-786887.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+
+        }
+
+        .fade-enter-active {
+            animation: go 2s;
+        }
+
+        @keyframes go {
+            from {
+                opacity: 0;
+                -webkit-transform: translateX(100%)
+            }
+
+            to {
+                opacity: 0.90;
+                -webkit-transform: translateX(0%)
+            }
+        }
+
+        .unit {
+            background-color: transparent;
+            opacity: 0.90
+        }
+
+        .g {
+            background-color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="d">
+        <transition-group appear appear-active-class="fade-enter-active">
+            <div v-for="(item,index) in list" :key="item.id" :id="item.id" :title="item.title"
+                style="width:95vw;height:95vh;padding: 1vh;margin: 1vh" class="unit">
+
+                <div id="graph1"
+                    style="width:45vw;height:47vh;float: left;margin-top: 0.1vh;margin-bottom: 0.1vh;margin-left: 0.1vw;margin-right: 0.1vw;"
+                    class="g">
+                </div>
+                <div id="graph2"
+                    style="width:45vw;height:47vh;float: right;margin-top: 0.1vh;margin-bottom: 0.1vh;margin-left: 0.1vw;margin-right: 0.1vw;"
+                    class="g">
+                </div>
+                <br>
+                <div id="graph3"
+                    style="width:45vw;height:47vh;float: left;margin-top: 0.1vh;margin-bottom: 0.1vh;margin-left: 0.1vw;margin-right: 0.1vw;"
+                    class="g">
+                </div>
+                <div id="graph4"
+                    style="width:45vw;height:47vh;float: right;margin-top: 0.1vh;margin-bottom: 0.1vh;margin-left: 0.1vw;margin-right: 0.1vw;"
+                    class="g">
+                </div>
+
+            </div>
+        </transition-group>
+    </div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-----https://github.com/plotly/plotly.js/><!-->
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <!-- 生产环境版本，优化了尺寸和速度 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        //global var
+        let webserver = "http://showdata.nctu.me/webserver/";
+        if (location.protocol == "https:") {
+            webserver = "https://showdata.nctu.me/webserver/";
+        }
+        let getdat = "testjson.php";
+        let getcfg = "get_devices_cfg.php";
+
+        let normalColor = '#80CAF6';
+        let wraningColor = "red";
+        let unknown = 0;//unknown value
+        let timeout = 10000;//10s
+
+        let divlist = [];//div generator array
+
+        //get webserver config
+        var request = new XMLHttpRequest();
+        request.open('GET', webserver + getcfg, false);// `false` makes the request synchronous
+        request.send();
+        if (request.status === 200) {
+            var cfg = JSON.parse(request.responseText);
+        } else {
+            prompt("there are no devices config here, please try again later !");
+        }
+        
+        //init arrays
+        for (let index = 0; index < cfg.length; index++) {
+            divlist[index] = { id: "d" + cfg[index][1], title: cfg[index][0] }
+            cfg[index][2] = JSON.parse(cfg[index][2]);
+        }
+
+        //init dom
+        var vm = new Vue({
+            el: '#d',
+            delimiters: ['${', '}'],
+            data: {
+                list: divlist
+            }
+        });
+        //smooth scroll
+        let current = 0;
+
+        function getPosition(element) {
+            let x = 0;
+            let y = 0;
+
+            while (element) {
+                x += element.offsetLeft - element.scrollLeft + element.clientLeft;
+                y += element.offsetTop - element.scrollLeft + element.clientTop;
+                element = element.offsetParent;
+            }
+
+            return { x: x, y: y };
+        }
+
+        document.addEventListener('mousewheel', function (event) {
+            event.preventDefault();
+            let is_down = event.wheelDelta < 0;
+            if (is_down) {
+                current--;
+                if (current < 0) {
+                    current = divlist.length - 1;
+                }
+            } else {
+                current++;
+                if (current >= divlist.length) {
+                    current = 0;
+                }
+            }
+            let pos = getPosition(document.getElementById(divlist[current].id));
+            window.scrollTo(0, pos.y);
+        }, { passive: false });
+
+        window.scrollTo(0, getPosition(document.getElementById(divlist[current].id)).y);
+        //
+        for (let index = 0; index < cfg.length; index++) {
+            let div = document.getElementById(divlist[index].id);
+
+            //devices
+            {
+                let sensorNum = cfg[index][2].length;//sensor num
+                let delay = 5000;//refresh rate in ms
+                let tarray = new Array();//time array
+                let darray = new Array();//data array
+                let txtarray = new Array();//text array
+                let graphSet = [];
+                let titleSet = [];
+                let pastLimit = 100;//how many points can look back
+                let target = div.title;
+                let now = new Date();
+                let pre = now;//pre time holder
+
+                
+                for (let i = 0; i < sensorNum; i++) {
+                    let n = (i == 2 ? i + 1 : i);
+                    div.children[n].id = divlist[index].id + div.children[n].id;
+                    graphSet[i] = div.children[n].id;
+                    titleSet[i] = div.title + "-" + cfg[index][2][i].id;
+                }
+
+                //initialize plotly.js
+                let data = [{
+                    x: [now],
+                    y: [0],
+                    mode: 'lines+markers',
+                    line: { color: normalColor }
+                }];
+
+                //initialize time and data array to nested
+                //start plot
+                for (let i = 0; i < sensorNum; i++) {
+                    tarray[i] = [];
+                    darray[i] = [];
+                    txtarray[i] = [];
+                    let layout = {
+                        title: titleSet[i]
+                    };
+                    Plotly.plot(graphSet[i], data, layout);
+                }
+
+                //call refresh in fixed time
+                setInterval(refresh, delay);
+
+                //refresh data from web server
+                function refresh() {
+                    let request = new XMLHttpRequest();
+                    request.timeout = timeout;
+                    request.ontimeout = function (e) { console.log("web server no response"); };
+                    request.addEventListener("readystatechange", function () {
+                        if (this.readyState == 4) {// 4 => complete
+                            console.log(this.responseText);
+                            let ar = JSON.parse(this.responseText)[0];
+
+                            let devicesid = ar[0];//devicesid
+                            let devicesstatus = ar[1];//devicesstatus
+                            let time = new Date(ar[2]);//time
+                            let obj = JSON.parse(ar[3]);//json value
+                            console.log(new Date(ar[2]).toString());
+                            for (const iterator of obj) {
+                                console.log(iterator);
+                            }
+
+
+                            if (time.valueOf() == pre.valueOf()) {//dulplicate
+
+                            } else {//not dulplicate
+                                pre = time;//update pre time holder
+
+                                for (let i = 0; i < obj.length; i++) {//loop dif sensor graph
+                                    //append new data
+                                    let value = obj[i].value;
+                                    if (value == "unknown") {
+                                        value = unknown
+                                    }
+                                    tarray[i].unshift(time);
+                                    darray[i].unshift(value);
+                                    txtarray[i].unshift((devicesstatus == "unavailable" ? devicesstatus : (obj[i].status)));
+                                    let color = normalColor;//set line color
+
+                                    //update data set
+                                    let update = {
+
+                                        x: [tarray[i]],
+                                        y: [darray[i]],
+                                        line: { color: color },
+                                        text: [txtarray[i]],
+                                        textposition: "top"
+                                    };
+
+                                    //prepare view obj
+                                    let olderTime = time.setMinutes(time.getMinutes() - 1);
+                                    let futureTime = time.setMinutes(time.getMinutes() + 1);
+                                    let min = Math.min(...darray[i]);
+                                    let max = Math.max(...darray[i]);
+                                    let dif = max - min;
+                                    let minuteView = {
+
+                                        'yaxis.range': [min - dif, max + dif],
+                                        'yaxis.title': obj[i].type,
+                                        xaxis: {
+                                            type: 'date',
+                                            range: [olderTime, futureTime]
+                                        },
+                                        title: titleSet[i] + "<br>" + (devicesstatus == "unavailable" ? devicesstatus : (obj[i].status))
+                                    }
+                                    //set view point and update data
+                                    Plotly.relayout(graphSet[i], minuteView);
+                                    Plotly.update(graphSet[i], update);
+
+
+
+                                    //clear too many data if in need
+                                    if (tarray[i].length > pastLimit) {
+                                        tarray[i].pop();
+                                        darray[i].pop();
+                                        txtarray[i].pop();
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    //send http get request to webserver
+                    request.open("GET", webserver + getdat + '?target=["' + target+'"]', true);
+                    request.send();
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+<?php 
+    $user="web";
+    $pass="a43235167";
+    $DBname="data";
+
+    header("Access-Control-Allow-Origin:*");
+
+    $link=new MySQLi("localhost",$GLOBALS['user'],$GLOBALS['pass'],$DBname);
+    if($link->connect_error){ echo "error!";}
+    $s="SELECT * from "."devices_cfg"."";
+    $r=$link->query($s);
+    $r=$r->fetch_all();
+    $r=json_encode($r);
+    echo $r;
+?>

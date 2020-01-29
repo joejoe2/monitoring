@@ -16,7 +16,7 @@ public class DataWindow {
 
     public String devicesID;
     public int sensorNum;
-
+    public String info="";
     public JSONObject[] sensors;
 
     public DataWindow(String devicesID, int sensorNum, String[] content) {
@@ -36,7 +36,10 @@ public class DataWindow {
                 //set initial pre state
                 obj.put("pre-status", "normal");
                 continue;
-            } else if (line.equals("")) {
+            } else if(line.startsWith("info=")){
+                info=line.substring("info".length());
+                continue;
+            }else if (line.equals("")) {
                 continue;
             }
             String pair[] = line.split("=");
@@ -50,10 +53,10 @@ public class DataWindow {
  * 
  * if some sensor is not defined in setting.ini, it will be skip;
  * else if some sensor is defined but missing in arg data, it will be skip too<br>
- * return concated(by &) obj_json string and msg=[a,b,c...], the [] means none ,otherwise split by "," notation 
- * @param data
- * @param isknown
- * @return "obj_json_strformat&msg=[a,b,c,...]"
+ * return concated(by '&') obj_json string and msg=[a,b,c...], the [] means none ,otherwise split by "," notation 
+ * @param data data to be evaluated
+ * @param isknown the data is unvailabe one or not
+ * @return string "obj_json_strformat&msg=[a,b,c,...]";
  */
     public synchronized String evaluate(String data, boolean isknown) {
         JSONArray ar = new JSONArray(data);

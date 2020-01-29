@@ -20,19 +20,31 @@ public class AnalyzeUnit {
     CommitUnit commitUnit;
     ArrayList<DataWindow> windows;
 
-    public AnalyzeUnit(ArrayList<DataWindow> windows, JTextArea console) {
+    /**
+     * init analyze unit
+     * @param windows pre-defined configs
+     * @param console MyConsole obj
+     */
+    public AnalyzeUnit(ArrayList<DataWindow> windows, MyConsole console) {
         this.console = console;
         this.windows = windows;
 
     }
 
-    void bind(CommitUnit commitUnit) {
+    /**
+     * bind commitUnit to Processor
+     * @param commitUnit next pipeline component
+     */
+    public void bind(CommitUnit commitUnit) {
         this.commitUnit = commitUnit;
         console.append("AnalyzeUnit start at " + LocalDateTime.now() + "\n");
     }
 
-    void add(String data) {
-        //new Thread(() -> {
+    /**
+     * input process data and pass to next pipeline component
+     * @param data input
+     */
+    public void add(String data) {
 
             String dataIN = data;
             String ID = dataIN.substring(dataIN.indexOf("devicesid=") + 10, dataIN.indexOf("&status"));
@@ -50,6 +62,5 @@ public class AnalyzeUnit {
                 }
             }
 
-        //}).start();
     }
 }
