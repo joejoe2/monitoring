@@ -1,5 +1,5 @@
 <?php
- $user="web";
+ $user="root";
  $pass="a43235167";
  $DBname="data";
  $target=$_GET['target'];

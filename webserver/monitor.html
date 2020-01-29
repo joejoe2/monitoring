@@ -98,6 +98,7 @@
         request.open('GET', webserver + getcfg, false);// `false` makes the request synchronous
         request.send();
         if (request.status === 200) {
+            console.log(request.responseText);
             var cfg = JSON.parse(request.responseText);
         } else {
             prompt("there are no devices config here, please try again later !");
