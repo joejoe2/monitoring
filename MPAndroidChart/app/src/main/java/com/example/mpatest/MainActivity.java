@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 
 import com.github.mikephil.charting.charts.LineChart;
@@ -18,6 +19,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,12 +30,12 @@ public class MainActivity extends AppCompatActivity {
     int i=0;
 
     public void wait_time(){
-        wait_time = false;
+        //wait_time = false;
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                wait_time = true;
+                addEntry();
             }
         }, 1000);
     }
@@ -112,7 +115,14 @@ public class MainActivity extends AppCompatActivity {
                 data.addDataSet(set);
             }
 
-            data.addEntry(new Entry(set.getEntryCount(), (float)Math.random()*1000), 0);
+            if(set.getEntryCount()>10){
+                set.removeFirst();
+                for(int i=0;i<10;i++){
+                    set.getEntryForIndex(i).setX(i);
+                }
+            }
+
+            data.addEntry(new Entry(set.getEntryCount(), (float)Math.random()*100), 0);
             data.notifyDataChanged();
             mChart.notifyDataSetChanged();
             // 折线图最多显示的数量
@@ -148,8 +158,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mChart = (LineChart) findViewById(R.id.LineChart);
         initChart();
-        while(true) {
-            addEntry();
-        }
+        wait_time();
+
     }
 }
