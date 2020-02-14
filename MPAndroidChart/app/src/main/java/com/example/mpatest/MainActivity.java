@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setContentView(R.layout.activity_main);
         //mChart = (LineChart) findViewById(R.id.LineChart);
         //initChart();
         //wait_time();
@@ -46,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         final MyAdapter adapter = new MyAdapter(this,getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(tabCount);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
