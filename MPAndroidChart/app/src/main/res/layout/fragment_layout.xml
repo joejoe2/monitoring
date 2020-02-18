@@ -1,12 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/LineChart"
-        android:layout_width="match_parent"
-        android:layout_height="627dp"
-        android:layout_centerInParent="true" />
+        android:layout_width="204dp"
+        android:layout_height="194dp"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15" />
 
-</RelativeLayout>
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/LineChart2"
+        android:layout_width="204dp"
+        android:layout_height="194dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="19dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/LineChart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/LineChart3"
+        android:layout_width="204dp"
+        android:layout_height="194dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="19dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/LineChart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.512" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/LineChart4"
+        android:layout_width="204dp"
+        android:layout_height="194dp"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.512" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

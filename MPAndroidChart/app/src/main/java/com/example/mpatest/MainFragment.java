@@ -20,6 +20,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.util.ArrayList;
+
 public class MainFragment extends Fragment {
 
     @Override
@@ -32,10 +34,31 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //
+
+        LineChart mChart;
         mChart = (LineChart) view.findViewById(R.id.LineChart);
-        initChart();
-        wait_time();
+        initChart(mChart);
+        addEntry(mChart);
+        chartlist.add(mChart);
+
+        LineChart mChart2;
+        mChart2 = (LineChart) view.findViewById(R.id.LineChart2);
+        initChart(mChart2);
+        addEntry(mChart2);
+        chartlist.add(mChart2);
+
+        LineChart mChart3;
+        mChart3 = (LineChart) view.findViewById(R.id.LineChart3);
+        initChart(mChart3);
+        addEntry(mChart3);
+        chartlist.add(mChart3);
+
+        LineChart mChart4;
+        mChart4 = (LineChart) view.findViewById(R.id.LineChart4);
+        initChart(mChart4);
+        addEntry(mChart4);
+        chartlist.add(mChart4);
+
     }
 
     public static MainFragment createInstance(String name) {
@@ -64,25 +87,20 @@ public class MainFragment extends Fragment {
         }
     }
 
-    //下面開始是linechart的部分
-
-    final Handler handler = new Handler();
-    private boolean wait_time = true;
-    LineChart mChart;
-    int i=0;
-
-    public void wait_time(){
-        //wait_time = false;
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                addEntry();
-            }
-        }, 1000);
+    public void update_all_chart(){
+        for (i=0;i<chartlist.size();i++){
+            addEntry(chartlist.get(i));
+        }
     }
 
-    private void initChart() {
+    //下面開始是linechart的部分
+
+    ArrayList<LineChart>chartlist=new ArrayList<LineChart>();
+
+    int i=0;
+
+
+    private void initChart(LineChart mChart) {
         // enable description text
         mChart.getDescription().setEnabled(false);
 
@@ -143,7 +161,7 @@ public class MainFragment extends Fragment {
         rightAxis.setEnabled(false);
     }
 
-    private void addEntry() {
+    private void addEntry(LineChart mChart) {
 
         LineData data = mChart.getData();
 
@@ -171,7 +189,6 @@ public class MainFragment extends Fragment {
             mChart.setVisibleXRangeMaximum(120);
 
             mChart.moveViewToX(data.getEntryCount());
-            wait_time();
         }
     }
 

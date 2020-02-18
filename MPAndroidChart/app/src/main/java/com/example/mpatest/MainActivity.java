@@ -29,6 +29,18 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     int tabCount=4;
+    final Handler handler = new Handler();
+
+    public void update_chart(MyAdapter adapter){
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0;i<adapter.getCount();i++) {
+                    ((MainFragment)adapter.getItem(i)).update_all_chart();
+                }
+            }
+        }, 1000);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,5 +71,6 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+        update_chart(adapter);
     }
 }
