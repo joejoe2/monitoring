@@ -1070,6 +1070,9 @@ id ALT
 id CTRL
 id FUNCTION
 id LineChart
+id LineChart2
+id LineChart3
+id LineChart4
 id META
 id SHIFT
 id SYM
