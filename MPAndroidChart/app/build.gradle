@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.mpatest"
-        minSdkVersion 23
+        minSdkVersion 26 //23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -18,8 +18,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+        // Flag to enable support for the new language APIs
+        //coreLibraryDesugaringEnabled true
+        // Sets Java compatibility to Java 8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

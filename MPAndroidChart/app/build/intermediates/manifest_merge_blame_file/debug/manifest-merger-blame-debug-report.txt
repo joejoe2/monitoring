@@ -5,7 +5,7 @@
 5    android:versionName="1.0" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="23"
+8        android:minSdkVersion="26"
 8-->D:\documents\monitoring\MPAndroidChart\app\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="29" />
 9-->D:\documents\monitoring\MPAndroidChart\app\src\main\AndroidManifest.xml

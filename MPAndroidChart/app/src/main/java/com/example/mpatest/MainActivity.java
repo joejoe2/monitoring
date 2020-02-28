@@ -24,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -39,17 +40,50 @@ public class MainActivity extends AppCompatActivity {
     static enum DATA_FIELD{DEV_IDNUM_FIELD,DEV_STATUS_FIELD,TIME_FIELD,DEV_VAL_FIELD};
     String cfg_link="http://192.168.66.16/webserver/get_devices_cfg.php";
     MyAdapter adapter;
-
+    int dev_size;
+    JSONArray retre_list;
     public void update_chart(){
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                for(int i=0;i<adapter.getCount();i++) {
-                    ((MainFragment)adapter.getItem(i)).update_all_chart();
-                }
-                update_chart();
+                new Thread(()->{
+                    try {
+                        //update data
+                        String json = Jsoup.connect("http://192.168.66.16/webserver/testjson.php?target="+retre_list.toString()).ignoreContentType(true).execute().body();
+                        //System.out.println(json);
+                        JSONArray array=new JSONArray(json);
+                        for (int i = 0; i < dev_size; i++) {
+                            JSONArray device=(JSONArray)array.get(i);
+                            String id=device.getString(DATA_FIELD.DEV_IDNUM_FIELD.ordinal());
+                            String status=device.getString(DATA_FIELD.DEV_STATUS_FIELD.ordinal());
+                            LocalDateTime time=LocalDateTime.parse(device.getString(DATA_FIELD.TIME_FIELD.ordinal()));
+                            JSONArray sensor=new JSONArray(device.getString(DATA_FIELD.DEV_VAL_FIELD.ordinal()));
+                            //System.out.println(id+" "+status+" "+time+" "+sensor);
+                            int sen_size=sensor.length();
+                            for (int j = 0; j < sen_size; j++) {
+                                JSONObject obj=sensor.getJSONObject(j);
+                                String sen_id,sen_type,sen_status;
+                                Double sen_val;
+                                sen_id=obj.getString("id");
+                                sen_type=obj.getString("type");
+                                sen_status=obj.getString("status");
+                                sen_val=obj.get("value") instanceof String?0:obj.getDouble("value");
+                                System.out.println(sen_id+" "+sen_type+" "+sen_val);
+                            }
+                        }
+
+                        MainActivity.this.runOnUiThread(()->{
+                            for(int i=0;i<adapter.getCount();i++) {
+                                ((MainFragment)adapter.getItem(i)).update_all_chart();
+                            }
+                            update_chart();
+                        });
+                    }catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                }).start();
             }
-        }, 1000);
+        }, 5000);
     }
 
     public void init_cfg(){
@@ -60,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
                 String json = Jsoup.connect(cfg_link).ignoreContentType(true).execute().body();
                 //System.out.println(json);
                 JSONArray array=new JSONArray(json);
-                JSONArray retre_list=new JSONArray();
-                int dev_size=array.length();
+                retre_list=new JSONArray();
+                dev_size=array.length();
                 for (int i = 0; i < dev_size; i++) {
                     //System.out.println(array.get(i));
                     JSONArray device=(JSONArray)array.get(i);
