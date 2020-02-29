@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(()->{
                     try {
                         //update data
+
                         String json = Jsoup.connect("http://192.168.66.16/webserver/testjson.php?target="+retre_list.toString()).ignoreContentType(true).execute().body();
                         //System.out.println(json);
                         JSONArray array=new JSONArray(json);
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                             JSONArray sensor=new JSONArray(device.getString(DATA_FIELD.DEV_VAL_FIELD.ordinal()));
                             //System.out.println(id+" "+status+" "+time+" "+sensor);
                             int sen_size=sensor.length();
+                            float[] datalist=new float[sen_size];
                             for (int j = 0; j < sen_size; j++) {
                                 JSONObject obj=sensor.getJSONObject(j);
                                 String sen_id,sen_type,sen_status;
@@ -68,14 +70,17 @@ public class MainActivity extends AppCompatActivity {
                                 sen_type=obj.getString("type");
                                 sen_status=obj.getString("status");
                                 sen_val=obj.get("value") instanceof String?0:obj.getDouble("value");
+
+                                datalist[j]=sen_val;
                                 System.out.println(sen_id+" "+sen_type+" "+sen_val);
                             }
+                            ((MainFragment)adapter.getItem(i)).update_all_chart(datalist);
                         }
 
                         MainActivity.this.runOnUiThread(()->{
-                            for(int i=0;i<adapter.getCount();i++) {
+                            /*for(int i=0;i<adapter.getCount();i++) {
                                 ((MainFragment)adapter.getItem(i)).update_all_chart();
-                            }
+                            }*/
                             update_chart();
                         });
                     }catch (Exception ex){
@@ -96,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
                 JSONArray array=new JSONArray(json);
                 retre_list=new JSONArray();
                 dev_size=array.length();
+                tabCount=dev_size;
+                adapter = new MyAdapter(this,getSupportFragmentManager(), tabCount);
                 for (int i = 0; i < dev_size; i++) {
                     //System.out.println(array.get(i));
                     JSONArray device=(JSONArray)array.get(i);
@@ -104,6 +111,13 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println(dev_id+" "+device.get(CFG_FIELD.DEV_ID_NUM_FIELD.ordinal()));
                     JSONArray sensor=new JSONArray(device.getString(CFG_FIELD.VAL_FIELD.ordinal()));
                     int sen_size=sensor.length();
+
+                    MainFragment tab=new MainFragment();
+                    Bundle bundle=new Bundle();
+                    bundle.putInt("chart_count",sen_size);
+                    tab.setArguments(bundle);
+                    adapter.allfrag.add(tab);
+
                     for (int j = 0; j < sen_size; j++) {
                         JSONObject obj=sensor.getJSONObject(j);
                         String sen_id,sen_type,sen_status;
@@ -116,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                tabCount=dev_size;
+
                 MainActivity.this.runOnUiThread(() -> {
                     setup_cfg();
                 });
@@ -131,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
             tabLayout.addTab(tabLayout.newTab().setText("ID"+i));
         }
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        adapter = new MyAdapter(this,getSupportFragmentManager(), tabLayout.getTabCount());
+
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(tabCount);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

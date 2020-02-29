@@ -16,11 +16,7 @@ public class MyAdapter extends FragmentPagerAdapter {
         super(fm);
         context = c;
         this.totalTabs = totalTabs;
-        int i=0;
-        for(i=0;i<totalTabs;i++){
-            MainFragment tab=new MainFragment();
-            allfrag.add(tab);
-        }
+
     }
 
     @Override

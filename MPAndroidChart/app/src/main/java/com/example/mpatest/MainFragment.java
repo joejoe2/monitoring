@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 public class MainFragment extends Fragment {
 
+    int chart_count;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -34,30 +35,19 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        chart_count=this.getArguments().getInt("chart_count");
 
-        LineChart mChart;
-        mChart = (LineChart) view.findViewById(R.id.LineChart);
-        initChart(mChart);
-        addEntry(mChart);
-        chartlist.add(mChart);
+        for(int i=0;i<chart_count;i++){
+            if(i==4){
+                break;
+            }
+            LineChart mChart;
+            mChart=view.findViewWithTag(i);
+            initChart(mChart);
+            addEntry(mChart,0);
+            chartlist.add(mChart);
+        }
 
-        LineChart mChart2;
-        mChart2 = (LineChart) view.findViewById(R.id.LineChart2);
-        initChart(mChart2);
-        addEntry(mChart2);
-        chartlist.add(mChart2);
-
-        LineChart mChart3;
-        mChart3 = (LineChart) view.findViewById(R.id.LineChart3);
-        initChart(mChart3);
-        addEntry(mChart3);
-        chartlist.add(mChart3);
-
-        LineChart mChart4;
-        mChart4 = (LineChart) view.findViewById(R.id.LineChart4);
-        initChart(mChart4);
-        addEntry(mChart4);
-        chartlist.add(mChart4);
 
     }
 
@@ -87,9 +77,9 @@ public class MainFragment extends Fragment {
         }
     }
 
-    public void update_all_chart(){
+    public void update_all_chart(float[] datalist){
         for (i=0;i<chartlist.size();i++){
-            addEntry(chartlist.get(i));
+            addEntry(chartlist.get(i),datalist[i]);
         }
     }
 
@@ -138,7 +128,8 @@ public class MainFragment extends Fragment {
         xl.setDrawLabels(false);
         xl.setGranularity(1f);
         //xl.setTypeface(mTfLight);
-        xl.setTextColor(Color.WHITE);
+
+        xl.setTextColor(Color.BLACK);
         xl.setDrawGridLines(true);
         xl.enableGridDashedLine(10f, 10f, 0f);
         xl.setAvoidFirstLastClipping(true);
@@ -161,7 +152,7 @@ public class MainFragment extends Fragment {
         rightAxis.setEnabled(false);
     }
 
-    private void addEntry(LineChart mChart) {
+    private void addEntry(LineChart mChart,float data_to_update) {
 
         LineData data = mChart.getData();
 
@@ -182,7 +173,7 @@ public class MainFragment extends Fragment {
                 }
             }
 
-            data.addEntry(new Entry(set.getEntryCount(), (float) Math.random() * 100), 0);
+            data.addEntry(new Entry(set.getEntryCount(),data_to_update), 0);
             data.notifyDataChanged();
             mChart.notifyDataSetChanged();
             // 折线图最多显示的数量
