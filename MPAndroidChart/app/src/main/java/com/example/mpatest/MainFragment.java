@@ -17,9 +17,12 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class MainFragment extends Fragment {
@@ -44,7 +47,7 @@ public class MainFragment extends Fragment {
             LineChart mChart;
             mChart=view.findViewWithTag(i);
             initChart(mChart);
-            addEntry(mChart,0);
+            //addEntry(mChart,0);
             chartlist.add(mChart);
         }
 
@@ -77,15 +80,18 @@ public class MainFragment extends Fragment {
         }
     }
 
-    public void update_all_chart(float[] datalist){
+    public void update_all_chart(String the_time_data_come,int[] idlist,float[] datalist){
+        xLabel.add(the_time_data_come);
         for (i=0;i<chartlist.size();i++){
-            addEntry(chartlist.get(i),datalist[i]);
+            addEntry(chartlist.get(idlist[i]),the_time_data_come,datalist[i]);
         }
     }
 
     //下面開始是linechart的部分
 
     ArrayList<LineChart>chartlist=new ArrayList<LineChart>();
+    ArrayList<String> xLabel = new ArrayList<>();
+
 
     int i=0;
 
@@ -134,6 +140,14 @@ public class MainFragment extends Fragment {
         xl.enableGridDashedLine(10f, 10f, 0f);
         xl.setAvoidFirstLastClipping(true);
         xl.setEnabled(true);
+        xl.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return xLabel.get((int)value);
+            }
+        });
+
+
 
         YAxis leftAxis = mChart.getAxisLeft();
         //leftAxis.setTypeface(mTfLight);
@@ -152,7 +166,7 @@ public class MainFragment extends Fragment {
         rightAxis.setEnabled(false);
     }
 
-    private void addEntry(LineChart mChart,float data_to_update) {
+    private void addEntry(LineChart mChart,String x_data,float data_to_update) {
 
         LineData data = mChart.getData();
 

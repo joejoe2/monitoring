@@ -61,7 +61,11 @@ public class MainActivity extends AppCompatActivity {
                             JSONArray sensor=new JSONArray(device.getString(DATA_FIELD.DEV_VAL_FIELD.ordinal()));
                             //System.out.println(id+" "+status+" "+time+" "+sensor);
                             int sen_size=sensor.length();
+
                             float[] datalist=new float[sen_size];
+                            int[] idlist=new int[sen_size];
+                            String the_time_data_come="";
+
                             for (int j = 0; j < sen_size; j++) {
                                 JSONObject obj=sensor.getJSONObject(j);
                                 String sen_id,sen_type,sen_status;
@@ -70,11 +74,11 @@ public class MainActivity extends AppCompatActivity {
                                 sen_type=obj.getString("type");
                                 sen_status=obj.getString("status");
                                 sen_val=obj.get("value") instanceof String?0:obj.getDouble("value");
-
-                                datalist[j]=sen_val;
+                                idlist[i]=Integer.parseInt(sen_id);
+                                //datalist[j]=sen_val;
                                 System.out.println(sen_id+" "+sen_type+" "+sen_val);
                             }
-                            ((MainFragment)adapter.getItem(i)).update_all_chart(datalist);
+                            ((MainFragment)adapter.getItem(i)).update_all_chart(the_time_data_come,idlist,datalist);
                         }
 
                         MainActivity.this.runOnUiThread(()->{
