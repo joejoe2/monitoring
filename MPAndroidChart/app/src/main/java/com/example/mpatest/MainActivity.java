@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     final Handler handler = new Handler();
     static enum CFG_FIELD{DEV_ID_FIELD,DEV_ID_NUM_FIELD,VAL_FIELD};
     static enum DATA_FIELD{DEV_IDNUM_FIELD,DEV_STATUS_FIELD,TIME_FIELD,DEV_VAL_FIELD};
-    String cfg_link="http://192.168.66.16/webserver/get_devices_cfg.php";
+    String cfg_link="http://192.168.1.2/webserver/get_devices_cfg.php";
     MyAdapter adapter;
     int dev_size;
     JSONArray retre_list;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         //update data
 
-                        String json = Jsoup.connect("http://192.168.66.16/webserver/testjson.php?target="+retre_list.toString()).ignoreContentType(true).execute().body();
+                        String json = Jsoup.connect("http://192.168.1.2/webserver/testjson.php?target="+retre_list.toString()).ignoreContentType(true).execute().body();
                         //System.out.println(json);
                         JSONArray array=new JSONArray(json);
                         for (int i = 0; i < dev_size; i++) {
@@ -69,11 +69,11 @@ public class MainActivity extends AppCompatActivity {
                             for (int j = 0; j < sen_size; j++) {
                                 JSONObject obj=sensor.getJSONObject(j);
                                 String sen_id,sen_type,sen_status;
-                                Double sen_val;
+                                float sen_val;
                                 sen_id=obj.getString("id");
                                 sen_type=obj.getString("type");
                                 sen_status=obj.getString("status");
-                                sen_val=obj.get("value") instanceof String?0:obj.getDouble("value");
+                                sen_val=(float)(obj.get("value") instanceof String?0f:obj.getDouble("value"));
                                 idlist[i]=Integer.parseInt(sen_id);
                                 //datalist[j]=sen_val;
                                 System.out.println(sen_id+" "+sen_type+" "+sen_val);

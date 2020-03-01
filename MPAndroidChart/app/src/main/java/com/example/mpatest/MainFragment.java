@@ -45,7 +45,7 @@ public class MainFragment extends Fragment {
                 break;
             }
             LineChart mChart;
-            mChart=view.findViewWithTag(i);
+            mChart=getView().findViewWithTag("l"+(i+1));
             initChart(mChart);
             //addEntry(mChart,0);
             chartlist.add(mChart);
