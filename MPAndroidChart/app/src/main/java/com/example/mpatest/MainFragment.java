@@ -23,6 +23,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class MainFragment extends Fragment {
@@ -125,7 +127,7 @@ public class MainFragment extends Fragment {
 
         XAxis xl = mChart.getXAxis();
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xl.setDrawLabels(false);
+        xl.setDrawLabels(true);
         xl.setGranularity(1f);
         //xl.setTypeface(mTfLight);
 
@@ -137,7 +139,11 @@ public class MainFragment extends Fragment {
         xl.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
-                return xLabel.get((int)value);
+                LocalTime first=LocalTime.parse(xLabel.get(0));
+                LocalTime last=LocalTime.parse(xLabel.get(xLabel.size()-1));
+                float millis=value/10*(last.toSecondOfDay()-first.toSecondOfDay())+first.toSecondOfDay();
+                LocalTime target=LocalTime.ofSecondOfDay((int)millis);
+                return target.toString();
             }
         });
 
@@ -179,6 +185,9 @@ public class MainFragment extends Fragment {
                 for (int i = 0; i < 10; i++) {
                     set.getEntryForIndex(i).setX(i);
                 }
+            }
+            if(xLabel.size()>10){
+                xLabel.remove(0);
             }
 
             data.addEntry(new Entry(set.getEntryCount(),data_to_update), 0);
