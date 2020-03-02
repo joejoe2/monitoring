@@ -70,20 +70,13 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Bundleの値を受け取る際はonCreateメソッド内で行う
-        Bundle args = getArguments();
-        // Bundleがセットされていなかった時はNullなのでNullチェックをする
-        if (args != null) {
-            // String型でNameの値を受け取る
-            //mName = args.getString(KEY_NAME);
-            // int型で背景色を受け取る
-            //mBackgroundColor = args.getInt(KEY_BACKGROUND, Color.TRANSPARENT);
-        }
+
     }
 
-    public void update_all_chart(String the_time_data_come,int[] idlist,float[] datalist){
+    public void update_all_chart(String the_time_data_come,ArrayList<String> idlist,float[] datalist){
         xLabel.add(the_time_data_come);
         for (i=0;i<chartlist.size();i++){
-            addEntry(chartlist.get(idlist[i]),the_time_data_come,datalist[i]);
+            addEntry(chartlist.get(id_index_list.indexOf(idlist.get(i))),the_time_data_come,datalist[i]);
         }
     }
 
@@ -92,6 +85,7 @@ public class MainFragment extends Fragment {
     ArrayList<LineChart>chartlist=new ArrayList<LineChart>();
     ArrayList<String> xLabel = new ArrayList<>();
 
+    ArrayList<String> id_index_list=new ArrayList<String>();
 
     int i=0;
 

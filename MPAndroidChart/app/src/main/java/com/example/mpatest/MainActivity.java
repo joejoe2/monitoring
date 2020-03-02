@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                             int sen_size=sensor.length();
 
                             float[] datalist=new float[sen_size];
-                            int[] idlist=new int[sen_size];
+                            ArrayList<String> idlist=new ArrayList<String>();
                             String the_time_data_come="";
 
                             for (int j = 0; j < sen_size; j++) {
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                                 sen_type=obj.getString("type");
                                 sen_status=obj.getString("status");
                                 sen_val=(float)(obj.get("value") instanceof String?0f:obj.getDouble("value"));
-                                idlist[i]=Integer.parseInt(sen_id);
+                                idlist.add(sen_id);
                                 //datalist[j]=sen_val;
                                 System.out.println(sen_id+" "+sen_type+" "+sen_val);
                             }
@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                         String sen_id,sen_type,sen_status;
                         Double sen_val;
                         sen_id=obj.getString("id");
+                        tab.id_index_list.add(sen_id);
                         sen_type=obj.getString("type");
                         sen_status=obj.getString("status");
                         sen_val=obj.getDouble("value");
