@@ -62,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
                             //System.out.println(id+" "+status+" "+time+" "+sensor);
                             int sen_size=sensor.length();
 
-                            float[] datalist=new float[sen_size];
-                            ArrayList<String> idlist=new ArrayList<String>();
-                            String the_time_data_come="";
+                            float[] data_list=new float[sen_size];
+                            ArrayList<String> id_list=new ArrayList<String>();
+
+                            String the_time_data_come=time.toLocalTime().toString();
 
                             for (int j = 0; j < sen_size; j++) {
                                 JSONObject obj=sensor.getJSONObject(j);
@@ -74,21 +75,25 @@ public class MainActivity extends AppCompatActivity {
                                 sen_type=obj.getString("type");
                                 sen_status=obj.getString("status");
                                 sen_val=(float)(obj.get("value") instanceof String?0f:obj.getDouble("value"));
-                                idlist.add(sen_id);
-                                //datalist[j]=sen_val;
+                                id_list.add(sen_id);
+                                data_list[j]=sen_val;
                                 System.out.println(sen_id+" "+sen_type+" "+sen_val);
                             }
-                            ((MainFragment)adapter.getItem(i)).update_all_chart(the_time_data_come,idlist,datalist);
-                        }
 
-                        MainActivity.this.runOnUiThread(()->{
-                            /*for(int i=0;i<adapter.getCount();i++) {
-                                ((MainFragment)adapter.getItem(i)).update_all_chart();
-                            }*/
-                            update_chart();
-                        });
+                            //update chart on ui
+                            final int index=i;
+                            MainActivity.this.runOnUiThread(()->{
+                                ((MainFragment)adapter.getItem(index)).update_all_chart(the_time_data_come,id_list,data_list);
+                            });
+
+                        }
                     }catch (Exception ex){
                         ex.printStackTrace();
+                    }finally {
+                        //repeat call
+                        MainActivity.this.runOnUiThread(()->{
+                            update_chart();
+                        });
                     }
                 }).start();
             }
