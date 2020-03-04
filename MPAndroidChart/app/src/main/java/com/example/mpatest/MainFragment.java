@@ -79,7 +79,7 @@ public class MainFragment extends Fragment {
     }
 
     public void update_all_chart(String the_time_data_come,ArrayList<String> idlist,float[] datalist){
-        xLabel.add(the_time_data_come);
+        //xLabel.add(the_time_data_come);
         now_time.setText(the_time_data_come);
         for (i=0;i<chartlist.size();i++){
             addEntry(chartlist.get(id_index_list.indexOf(idlist.get(i))),the_time_data_come,datalist[i]);
@@ -89,7 +89,7 @@ public class MainFragment extends Fragment {
     //下面開始是linechart的部分
 
     ArrayList<LineChart>chartlist=new ArrayList<LineChart>();
-    ArrayList<String> xLabel = new ArrayList<>();
+    //ArrayList<String> xLabel = new ArrayList<>();
 
     ArrayList<String> id_index_list=new ArrayList<String>();
 
@@ -140,7 +140,7 @@ public class MainFragment extends Fragment {
         xl.enableGridDashedLine(10f, 10f, 0f);
         xl.setAvoidFirstLastClipping(true);
         xl.setEnabled(true);
-        xl.setValueFormatter(new ValueFormatter() {
+        /*xl.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
                 LocalTime first=LocalTime.parse(xLabel.get(0));
@@ -149,7 +149,7 @@ public class MainFragment extends Fragment {
                 LocalTime target=LocalTime.ofSecondOfDay((int)millis);
                 return target.toString();
             }
-        });
+        });*/
 
 
 
@@ -189,9 +189,6 @@ public class MainFragment extends Fragment {
                 for (int i = 0; i < 10; i++) {
                     set.getEntryForIndex(i).setX(i);
                 }
-            }
-            if(xLabel.size()>10){
-                xLabel.remove(0);
             }
 
             data.addEntry(new Entry(set.getEntryCount(),data_to_update), 0);
