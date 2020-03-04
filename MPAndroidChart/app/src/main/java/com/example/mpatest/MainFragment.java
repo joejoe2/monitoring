@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.fragment.app.Fragment;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 public class MainFragment extends Fragment {
 
     int chart_count;
+    TextView now_time;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -42,6 +44,7 @@ public class MainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         chart_count=this.getArguments().getInt("chart_count");
 
+        now_time=getView().findViewById(R.id.textView);
         for(int i=0;i<chart_count;i++){
             if(i==4){
                 break;
@@ -77,6 +80,7 @@ public class MainFragment extends Fragment {
 
     public void update_all_chart(String the_time_data_come,ArrayList<String> idlist,float[] datalist){
         xLabel.add(the_time_data_come);
+        now_time.setText(the_time_data_come);
         for (i=0;i<chartlist.size();i++){
             addEntry(chartlist.get(id_index_list.indexOf(idlist.get(i))),the_time_data_come,datalist[i]);
         }

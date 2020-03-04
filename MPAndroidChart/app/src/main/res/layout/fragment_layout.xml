@@ -16,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.116" />
+        app:layout_constraintVertical_bias="0.253" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/LineChart2"
@@ -31,7 +31,7 @@
         app:layout_constraintStart_toEndOf="@+id/LineChart1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.116" />
+        app:layout_constraintVertical_bias="0.253" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/LineChart3"
@@ -46,7 +46,7 @@
         app:layout_constraintStart_toEndOf="@+id/LineChart1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.541" />
+        app:layout_constraintVertical_bias="0.689" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/LineChart4"
@@ -59,7 +59,22 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.541" />
+        app:layout_constraintVertical_bias="0.689" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="nowTime"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
