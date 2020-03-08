@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "869246135877",
+    "firebase_url": "https://testproject-markchen56.firebaseio.com",
+    "project_id": "testproject-markchen56",
+    "storage_bucket": "testproject-markchen56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869246135877:android:572f63527ded2cf742fd2c",
+        "android_client_info": {
+          "package_name": "com.example.mpatest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "869246135877-uop78bc6a4uvlbb99sckgroqdvd4afcq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnHlQVvkG33zan0kOXYIwtVXmTf5OZIFo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "869246135877-uop78bc6a4uvlbb99sckgroqdvd4afcq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
