@@ -65,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
                             float[] data_list=new float[sen_size];
                             ArrayList<String> id_list=new ArrayList<String>();
 
-                            String the_time_data_come=time.toLocalTime().toString();
-
                             for (int j = 0; j < sen_size; j++) {
                                 JSONObject obj=sensor.getJSONObject(j);
                                 String sen_id,sen_type,sen_status;
@@ -83,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                             //update chart on ui
                             final int index=i;
                             MainActivity.this.runOnUiThread(()->{
-                                ((MainFragment)adapter.getItem(index)).update_all_chart(the_time_data_come,id_list,data_list);
+                                ((MainFragment)adapter.getItem(index)).update_all_chart(time,id_list,data_list);
                             });
 
                         }

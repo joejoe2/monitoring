@@ -65,7 +65,7 @@
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="nowTime"
+        android:text="last update"
         android:textAlignment="center"
         android:textSize="30sp"
         android:textStyle="bold"

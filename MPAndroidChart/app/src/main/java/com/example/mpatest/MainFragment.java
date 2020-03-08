@@ -32,6 +32,7 @@ public class MainFragment extends Fragment {
 
     int chart_count;
     TextView now_time;
+    LocalDateTime last_time=null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -78,11 +79,13 @@ public class MainFragment extends Fragment {
 
     }
 
-    public void update_all_chart(String the_time_data_come,ArrayList<String> idlist,float[] datalist){
-        //xLabel.add(the_time_data_come);
-        now_time.setText(the_time_data_come);
-        for (i=0;i<chartlist.size();i++){
-            addEntry(chartlist.get(id_index_list.indexOf(idlist.get(i))),the_time_data_come,datalist[i]);
+    public void update_all_chart(LocalDateTime the_time_data_come,ArrayList<String> idlist,float[] datalist){
+        if(last_time==null||last_time.isBefore(the_time_data_come)){
+            last_time=the_time_data_come;
+            now_time.setText(the_time_data_come.toLocalDate()+"\n"+the_time_data_come.toLocalTime());
+            for (i=0;i<chartlist.size();i++){
+                addEntry(chartlist.get(id_index_list.indexOf(idlist.get(i))),datalist[i]);
+            }
         }
     }
 
@@ -101,7 +104,7 @@ public class MainFragment extends Fragment {
         mChart.getDescription().setEnabled(false);
 
         // enable touch gestures
-        mChart.setTouchEnabled(true);
+        mChart.setTouchEnabled(false);
 
         // enable scaling and dragging
         mChart.setDragEnabled(true);
@@ -131,26 +134,14 @@ public class MainFragment extends Fragment {
 
         XAxis xl = mChart.getXAxis();
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xl.setDrawLabels(true);
+        xl.setDrawLabels(false);
         xl.setGranularity(1f);
-        //xl.setTypeface(mTfLight);
 
         xl.setTextColor(Color.BLACK);
         xl.setDrawGridLines(true);
         xl.enableGridDashedLine(10f, 10f, 0f);
         xl.setAvoidFirstLastClipping(true);
         xl.setEnabled(true);
-        /*xl.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                LocalTime first=LocalTime.parse(xLabel.get(0));
-                LocalTime last=LocalTime.parse(xLabel.get(xLabel.size()-1));
-                float millis=value/10*(last.toSecondOfDay()-first.toSecondOfDay())+first.toSecondOfDay();
-                LocalTime target=LocalTime.ofSecondOfDay((int)millis);
-                return target.toString();
-            }
-        });*/
-
 
 
         YAxis leftAxis = mChart.getAxisLeft();
@@ -170,7 +161,7 @@ public class MainFragment extends Fragment {
         rightAxis.setEnabled(false);
     }
 
-    private void addEntry(LineChart mChart,String x_data,float data_to_update) {
+    private void addEntry(LineChart mChart,float data_to_update) {
 
         LineData data = mChart.getData();
 
