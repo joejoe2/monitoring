@@ -71,23 +71,32 @@ void loop() {
      sen=sen+'\n';
      sen=sen+"devices01";
      sen=sen+'\n';
+     sen=sen+"senser_id: 0"+'\n';
      sen=sen+"CO2 "+ppm+'\n';
      Serial.println(ppm);
-     
+
+  sen=sen+"senser_id: 1"+'\n';   
   if (! isnan(t))
   {
     //Serial.print("Temp *C = "); 
     //Serial.println(t);  //println = 改行を含めたprint
+    
     sen=sen+"Temp "+t+'\n';
   } 
+  else{
+    sen=sen+"Temp error"+'\n';
+  }
   
- 
+  sen=sen+"senser_id: 2"+'\n';
   if (! isnan(h)) 
   {
     //Serial.print("Hum. % = "); 
     Serial.println(h);
     sen=sen+"Humid "+h+'\n';
   } 
+  else{
+    sen=sen+"Humid error"+'\n';
+  }
   //Serial.println(sen);
   uint8_t buf[sen.length()+1];
   sen.toCharArray(buf,sen.length());
