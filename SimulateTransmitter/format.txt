@@ -1,7 +1,13 @@
-ex.字串 target=devices01&devicesid=01&status=unavailable&time=2019-10-24T10:20:45.732&obj=[{"id": "sensor01", "type": "tm", "value":0, "status": "test"}, {"id": "sensor02", "type": "tm", "value":0, "status": "test"}]
+rasperry pi:
+ex.字串 target=devices01&devicesid=01&status=runing&time=2019-10-24T10:20:45.732&obj=[{"id": "sensor01", "type": "tm", "value":0, "status": "test"}, {"id": "sensor02", "type": "tm", "value":0, "status": "test"}]
 用&區分欄位
 target=接 devices+id(由品修提供)
 devicesid=id(同上)
 status=任意值(ex. testing)
 time=java localdatetime的預設格式(自己查)
 obj=[{},{},...] 其中裡為json object格式 "id": 字串(由品修提供), "type": 字串(由品修提供), "value": 小數值(由品修提供), "status": "test"(固定)
+
+arduino:
+ex. 字串 target=devices01&devicesid=01&status=runing&time=null&obj=[{"id": "sensor01", "type": "tm", "value":0, "status": "test"}, {"id": "sensor02", "type": "tm", "value":0, "status": "test"}]
+sensor status 正常給test 否則給unknown(value給-1)
+type放 種類(單位)
