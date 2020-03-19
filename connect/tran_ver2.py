@@ -30,8 +30,7 @@ class Worker(threading.Thread):
                     sock.settimeout(5)
                     sock.connect((entry1, port))
                     msg = valid + msg
-                    s = (aes.encrypt(key, msg)).encode("utf8")
-                    sock.send(s)
+                    sock.send((aes.encrypt(key, msg)).encode("utf8"))
                     sock.close()
                     print("connect success !")
                 except:
@@ -79,7 +78,7 @@ while True:
                 obj += ", "
         obj = obj+"]"
         send = target+"&"+devicesid+"&"+status+"&"+time+"&"+obj
-
+        print(send)
         my_queue.put(send)
 
     except:
