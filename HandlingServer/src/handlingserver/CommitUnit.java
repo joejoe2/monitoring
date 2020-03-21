@@ -9,6 +9,8 @@ import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.net.ssl.HttpsURLConnection;
 import javax.swing.JTextArea;
 
@@ -256,7 +258,30 @@ public class CommitUnit {
         if (firebase.equals("") || data.equals("[]")) {
             return;
         }
+        try {
+            String url = "https://fcm.googleapis.com/fcm/send";
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            //添加请求头
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setRequestProperty("Authorization", "key="+firebase);
+            //发送Post请求
+            con.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.writeBytes("{ \"data\": {\n"
+                    + "    \"msg\": \""+data+"\",\n"
+                    + "  },\n"
+                    + "  \"to\" : \"/topics/sensor\"\n"
+                    + "}");
+            wr.flush();
+            wr.close();
 
+            int responseCode = con.getResponseCode();
+            console.append("to firebase => " + data + " wtih response code=" + responseCode + "\n");
+        } catch (Exception ex) {
+            console.append(ex+"\n");
+        }
     }
 
     /**
