@@ -214,6 +214,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        //FCMService service=new FCMService();
+        //service.startService();
     }
 
     @Override
