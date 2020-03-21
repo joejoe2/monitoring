@@ -27,7 +27,7 @@ class Worker(threading.Thread):
                 # refer to simulatetransmisterr example
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 try:
-                    sock.settimeout(5)
+                    sock.settimeout(3)
                     sock.connect((entry1, port))
                     msg = valid + msg
                     sock.send((aes.encrypt(key, msg)).encode("utf8"))
@@ -36,7 +36,7 @@ class Worker(threading.Thread):
                 except:
                     print("connect fail !")
             else:
-                time.sleep(0.5)
+                time.sleep(0.2)
 
 
 my_queue = queue.Queue()  # queue is thread safe !!!
@@ -45,24 +45,25 @@ my_queue = queue.Queue()  # queue is thread safe !!!
 lock = threading.Lock()
 
 my_worker1 = Worker(my_queue, 1, lock)
-my_worker2 = Worker(my_queue, 2, lock)
 my_worker1.start()
-my_worker2.start()
 
 # Enable USB Communication
 ser = serial.Serial('/dev/ttyUSB0', 9600,timeout=.5)
 
 while True:
     incoming = ser.readline().strip()
+    if len(incoming==0):
+        continue
+    now_time="time="+datetime.datetime.now().isoformat()
     # use a thread to below...
     try:
         incoming=incoming[incoming.find(b';')+1:incoming.rfind(b';')].decode()
         #ex 01&01,co2,0,t;02,tm,29.94,t;03,humid,57.75,t;04,humid,57.75,t
-        target="target=devices"+incoming.split("&")[0]
-        devicesid="devicesid="++incoming.split("&")[0]
-        ar=incoming.split("&")[1].split(";")
+        d=incoming.split("&")
+        target="target=devices"+d[0]
+        devicesid="devicesid="+d[0]
+        ar=d[1].split(";")
         sen_cnt=len(ar)
-        time="time="+datetime.datetime.now().isoformat()
         status="status=running"
         obj="obj=["
         for i in range(0,sen_cnt):
@@ -77,9 +78,9 @@ while True:
             if i != sen_cnt - 1:
                 obj += ", "
         obj = obj+"]"
-        send = target+"&"+devicesid+"&"+status+"&"+time+"&"+obj
+        send = target+"&"+devicesid+"&"+status+"&"+now_time+"&"+obj
         print(send)
         my_queue.put(send)
 
     except:
-        print(incoming)
+        print("error data:"+incoming)

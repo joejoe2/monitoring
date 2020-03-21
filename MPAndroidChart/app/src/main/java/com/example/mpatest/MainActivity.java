@@ -149,12 +149,13 @@ public class MainActivity extends AppCompatActivity {
 
                 MainActivity.this.runOnUiThread(() -> {
                     setup_cfg();
-                    setup_FCM();
+
                 });
             }catch(Exception ex){
                     ex.printStackTrace();
             }
         }).start();
+        setup_FCM();
     }
 
     public void setup_cfg(){

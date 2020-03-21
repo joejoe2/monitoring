@@ -52,5 +52,3 @@ def decrypt(key, message):
     decrypted = unpad(decrypted_padded)
 
     return decrypted.decode("UTF-8")
-
-

@@ -32,7 +32,7 @@ public class HandlingServer extends JFrame {
     String webserver = "https://showdata.nctu.me/webserver";
     String db = "https://showdata.nctu.me/db";
     String bot = "http://joejoe2bot.herokuapp.com/kkgmsmepoa54fd9rew2da/2n11td", botkey = "a43fdfvvpefd55";
-    String firebase = "";
+    String firebase = "AAAAymMbbkU:APA91bFwBX8tIvdPm2Q6k44gveOD-Dl6gxjS0YpJQNCB8CegNBRQaJexWczwGdphQ_2sRyrR8LtisLO3dL8zXGFVEVc_V8xoFnclV9Icf3OXRDeVf2h_yxZ9dap2kZusG63LwEg_W6IK";
 
     //tips label
     JLabel webserver_label, db_label, bot_label, firebase_label;
@@ -206,7 +206,7 @@ public class HandlingServer extends JFrame {
         this.add(bot_label);
 
         //set up firebase label
-        firebase_label = new JLabel("firebase address : ");
+        firebase_label = new JLabel("firebase key : ");
         firebase_label.setSize(150, 25);
         firebase_label.setLocation(0, 160);
         firebase_label.setFont(general_font);
