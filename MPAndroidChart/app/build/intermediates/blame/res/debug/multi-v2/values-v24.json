@@ -4,7 +4,7 @@
             "outputFile": "D:\\documents\\monitoring\\MPAndroidChart\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\70136\\.gradle\\caches\\transforms-2\\files-2.1\\f758d2e929dac41d7638458a017167e9\\media-1.0.0\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\70136\\.gradle\\caches\\transforms-2\\files-2.1\\744e20a78dacd4e10a3ccb1c5582fd4a\\media-1.0.0\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\70136\\.gradle\\caches\\transforms-2\\files-2.1\\cb99e77638f7aea73fdfbb0798f74a2b\\appcompat-1.1.0\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\70136\\.gradle\\caches\\transforms-2\\files-2.1\\deae1025afce5eec85ff8ccbcc9e7c1f\\appcompat-1.1.0\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
