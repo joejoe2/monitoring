@@ -2,10 +2,19 @@ package com.example.mpatest;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -219,12 +228,66 @@ public class MainActivity extends AppCompatActivity {
         //service.startService();
     }
 
+    public String channel_id="id_0";
+    int notify_id =888;
+    private NotificationManagerCompat mNotificationManagerCompat;
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name="channel_name";
+            String description = "channel_description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public void send_notify_to_user(String context){
+        Intent notifyIntent = new Intent(this, MainActivity.class);
+        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        // Adds the back stack
+        stackBuilder.addParentStack(MainActivity.class);
+        // Adds the Intent to the top of the stack
+        stackBuilder.addNextIntent(notifyIntent);
+
+        PendingIntent mainPendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        notifyIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channel_id);
+        builder.setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("My notification")
+                .setContentText(context)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(mainPendingIntent)
+                .setAutoCancel(true);
+
+        Notification notify=builder.build();
+        mNotificationManagerCompat.notify(notify_id,notify);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
+        createNotificationChannel();
+        mNotificationManagerCompat = NotificationManagerCompat.from(this);
+
+
         //
         init_cfg();
         //

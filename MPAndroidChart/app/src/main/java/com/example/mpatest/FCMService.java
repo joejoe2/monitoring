@@ -1,9 +1,15 @@
 package com.example.mpatest;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -11,6 +17,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class FCMService extends FirebaseMessagingService {
+    private NotificationManagerCompat mNotificationManagerCompat;
     public FCMService() {
     }
 
@@ -24,9 +31,8 @@ public class FCMService extends FirebaseMessagingService {
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
-
+            String context=""+remoteMessage.getData();
+            Log.d(TAG, "Message data payload: " + context);
         }
 
         if (remoteMessage.getNotification() != null) {
