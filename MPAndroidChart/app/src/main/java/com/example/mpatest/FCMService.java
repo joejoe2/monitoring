@@ -1,10 +1,13 @@
 package com.example.mpatest;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -17,8 +20,10 @@ import com.google.firebase.messaging.RemoteMessage;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class FCMService extends FirebaseMessagingService {
-    private NotificationManagerCompat mNotificationManagerCompat;
+
     public FCMService() {
+        createNotificationChannel();
+        mNotificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
     }
 
     @Override
@@ -31,8 +36,9 @@ public class FCMService extends FirebaseMessagingService {
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            String context=""+remoteMessage.getData();
+            String context=remoteMessage.getData().toString();
             Log.d(TAG, "Message data payload: " + context);
+            send_notify_to_user(context);
         }
 
         if (remoteMessage.getNotification() != null) {
@@ -54,5 +60,58 @@ public class FCMService extends FirebaseMessagingService {
         //看你要不要用這個，總之我先放著
     }
 
+    //下面是通知用
+    private NotificationManagerCompat mNotificationManagerCompat;
+    public String channel_id="id_0";
+    int notify_id =888;
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name="channel_name";
+            String description = "channel_description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager;
+            notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+    }
+    public void send_notify_to_user(String context){
+
+        //notify
+        Intent notifyIntent = new Intent(getApplicationContext(), MainActivity.class);
+        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+          // Adds the back stack
+        stackBuilder.addParentStack(MainActivity.class);
+          // Adds the Intent to the top of the stack
+        stackBuilder.addNextIntent(notifyIntent);
+
+        PendingIntent mainPendingIntent =
+                PendingIntent.getActivity(
+                        getApplicationContext(),
+                        0,
+                        notifyIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channel_id);
+        builder.setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("My notification")
+                .setContentText(context)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(mainPendingIntent)
+                .setAutoCancel(true);
+
+        Notification notify=builder.build();
+        mNotificationManagerCompat.notify(notify_id,notify);
+    }
 
 }
