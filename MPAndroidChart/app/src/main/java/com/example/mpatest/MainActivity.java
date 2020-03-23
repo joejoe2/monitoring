@@ -55,10 +55,35 @@ public class MainActivity extends AppCompatActivity {
     final Handler handler = new Handler();
     static enum CFG_FIELD{DEV_ID_FIELD,DEV_ID_NUM_FIELD,VAL_FIELD};
     static enum DATA_FIELD{DEV_IDNUM_FIELD,DEV_STATUS_FIELD,TIME_FIELD,DEV_VAL_FIELD};
-    String cfg_link="http://192.168.1.2/webserver/get_devices_cfg.php";
+    String cfg_link="https://showdata.nctu.me/webserver/get_devices_cfg.php";
+    String data_link="https://showdata.nctu.me/webserver/testjson.php?target=";
     MyAdapter adapter;
     int dev_size;
     JSONArray retre_list;
+
+    //下面是通知用
+    private NotificationManagerCompat mNotificationManagerCompat;
+    public String channel_id="id_0";
+    int notify_id =888;
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name="channel_name";
+            String description = "channel_description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+
+            NotificationManager notificationManager=getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+    }
+
     public void update_chart(){
         handler.postDelayed(new Runnable() {
             @Override
@@ -67,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         //update data
 
-                        String json = Jsoup.connect("http://192.168.1.2/webserver/testjson.php?target="+retre_list.toString()).ignoreContentType(true).execute().body();
+                        String json = Jsoup.connect(data_link+retre_list.toString()).ignoreContentType(true).execute().body();
                         //System.out.println(json);
                         JSONArray array=new JSONArray(json);
                         for (int i = 0; i < dev_size; i++) {
@@ -164,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
                     ex.printStackTrace();
             }
         }).start();
-        setup_FCM();
     }
 
     public void setup_cfg(){
@@ -220,12 +244,9 @@ public class MainActivity extends AppCompatActivity {
                         // Log and toast
                         String msg = "InstanceID Token: "+token;
                         Log.d("MainActivity", msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
-        //FCMService service=new FCMService();
-        //service.startService();
     }
 
 
@@ -238,6 +259,8 @@ public class MainActivity extends AppCompatActivity {
 
         //
         init_cfg();
+        setup_FCM();
+        createNotificationChannel();
         //
     }
 }
