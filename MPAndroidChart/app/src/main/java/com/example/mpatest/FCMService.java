@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
@@ -22,8 +23,7 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class FCMService extends FirebaseMessagingService {
 
     public FCMService() {
-        createNotificationChannel();
-        mNotificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+        //createNotificationChannel();
     }
 
     @Override
@@ -65,23 +65,6 @@ public class FCMService extends FirebaseMessagingService {
     public String channel_id="id_0";
     int notify_id =888;
 
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name="channel_name";
-            String description = "channel_description";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager;
-            notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-    }
     public void send_notify_to_user(String context){
 
         //notify
@@ -101,7 +84,7 @@ public class FCMService extends FirebaseMessagingService {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), channel_id);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channel_id);
         builder.setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("My notification")
                 .setContentText(context)
@@ -111,7 +94,11 @@ public class FCMService extends FirebaseMessagingService {
                 .setAutoCancel(true);
 
         Notification notify=builder.build();
-        mNotificationManagerCompat.notify(notify_id,notify);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(notify_id,notify);
     }
 
 }
