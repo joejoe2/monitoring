@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                             JSONArray device=(JSONArray)array.get(i);
                             String id=device.getString(DATA_FIELD.DEV_IDNUM_FIELD.ordinal());
                             String status=device.getString(DATA_FIELD.DEV_STATUS_FIELD.ordinal());
+                            String device_id_and_status="Device id : "+id+", Status : "+status;
                             LocalDateTime time=LocalDateTime.parse(device.getString(DATA_FIELD.TIME_FIELD.ordinal()));
                             JSONArray sensor=new JSONArray(device.getString(DATA_FIELD.DEV_VAL_FIELD.ordinal()));
                             //System.out.println(id+" "+status+" "+time+" "+sensor);
@@ -106,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
                             float[] data_list=new float[sen_size];
                             ArrayList<String> id_list=new ArrayList<String>();
+                            ArrayList<String> status_list=new ArrayList<String>();
 
                             for (int j = 0; j < sen_size; j++) {
                                 JSONObject obj=sensor.getJSONObject(j);
@@ -117,13 +119,14 @@ public class MainActivity extends AppCompatActivity {
                                 sen_val=(float)(obj.get("value") instanceof String?0f:obj.getDouble("value"));
                                 id_list.add(sen_id);
                                 data_list[j]=sen_val;
+                                status_list.add(sen_status);
                                 System.out.println(sen_id+" "+sen_type+" "+sen_val);
                             }
 
                             //update chart on ui
                             final int index=i;
                             MainActivity.this.runOnUiThread(()->{
-                                ((MainFragment)adapter.getItem(index)).update_all_chart(time,id_list,data_list);
+                                ((MainFragment)adapter.getItem(index)).update_all_chart(time,device_id_and_status,id_list,data_list,status_list);
                             });
 
                         }

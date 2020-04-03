@@ -44,6 +44,7 @@ public class MainFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         chart_count=this.getArguments().getInt("chart_count");
+        now_device_status=getView().findViewById(R.id.device_status);
 
         now_time=getView().findViewById(R.id.textView);
         for(int i=0;i<chart_count;i++){
@@ -55,7 +56,12 @@ public class MainFragment extends Fragment {
             initChart(mChart);
             //addEntry(mChart,0);
             chartlist.add(mChart);
+
+            TextView t;
+            t=getView().findViewWithTag("t"+(i+1));
+            sensor_status_list.add(t);
         }
+
 
 
     }
@@ -79,12 +85,14 @@ public class MainFragment extends Fragment {
 
     }
 
-    public void update_all_chart(LocalDateTime the_time_data_come,ArrayList<String> idlist,float[] datalist){
+    public void update_all_chart(LocalDateTime the_time_data_come,String device_status,ArrayList<String> idlist,float[] datalist,ArrayList<String> statuslist){
         if(last_time==null||last_time.isBefore(the_time_data_come)){
             last_time=the_time_data_come;
+            now_device_status.setText(device_status);
             now_time.setText(the_time_data_come.toLocalDate()+"\n"+the_time_data_come.toLocalTime());
             for (i=0;i<chartlist.size();i++){
                 addEntry(chartlist.get(id_index_list.indexOf(idlist.get(i))),datalist[i]);
+                sensor_status_list.get(id_index_list.indexOf(idlist.get(i))).setText(statuslist.get(i));
             }
         }
     }
@@ -96,6 +104,9 @@ public class MainFragment extends Fragment {
 
     ArrayList<String> id_index_list=new ArrayList<String>();
 
+    ArrayList<TextView> sensor_status_list=new ArrayList<TextView>();
+
+    TextView now_device_status;
     int i=0;
 
 
