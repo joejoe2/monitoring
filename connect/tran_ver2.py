@@ -50,12 +50,7 @@ my_worker1.start()
 # Enable USB Communication
 ser = serial.Serial('/dev/ttyUSB0', 9600,timeout=.5)
 
-while True:
-    incoming = ser.readline().strip()
-    if len(incoming==0):
-        continue
-    now_time="time="+datetime.datetime.now().isoformat()
-    # use a thread to below...
+def handle(incoming):
     try:
         incoming=incoming[incoming.find(b';')+1:incoming.rfind(b';')].decode()
         #ex 01&01,co2,0,t;02,tm,29.94,t;03,humid,57.75,t;04,humid,57.75,t
@@ -83,4 +78,17 @@ while True:
         my_queue.put(send)
 
     except:
-        print("error data:"+incoming)
+        # print("error data:"+incoming)
+        pass
+
+
+while True:
+    incoming = ser.readline().strip()
+    if len(incoming==0):
+        continue
+    incoming = incoming.split(b'~')
+    now_time="time="+datetime.datetime.now().isoformat()
+    # use a thread to below...
+    for s in incoming:
+        handle(s)
+
