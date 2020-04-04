@@ -7,59 +7,55 @@
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/LineChart1"
-        android:layout_width="190dp"
-        android:layout_height="190dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_alignParentBottom="true"
         android:tag="l1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.253" />
+        app:layout_constraintTop_toBottomOf="@+id/device_status"
+        app:layout_constraintVertical_bias="0.018" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/LineChart2"
-        android:layout_width="190dp"
-        android:layout_height="190dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="19dp"
         android:tag="l2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.362"
         app:layout_constraintStart_toEndOf="@+id/LineChart1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.253" />
+        app:layout_constraintTop_toBottomOf="@+id/device_status"
+        app:layout_constraintVertical_bias="0.018" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/LineChart3"
-        android:layout_width="190dp"
-        android:layout_height="190dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="19dp"
         android:tag="l3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/LineChart1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.744" />
+        app:layout_constraintHorizontal_bias="0.362"
+        app:layout_constraintStart_toEndOf="@+id/LineChart4"
+        app:layout_constraintTop_toBottomOf="@+id/LineChart2"
+        app:layout_constraintVertical_bias="0.043" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/LineChart4"
-        android:layout_width="190dp"
-        android:layout_height="190dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_alignParentBottom="true"
         android:tag="l4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.744" />
+        app:layout_constraintTop_toBottomOf="@+id/LineChart1"
+        app:layout_constraintVertical_bias="0.044" />
 
     <TextView
         android:id="@+id/textView"
@@ -80,80 +76,67 @@
         android:id="@+id/device_status"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
         android:text="Device Status"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.115" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/sensor2_status"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="28dp"
         android:tag="t2"
         android:text="sensor2_status"
         android:textAlignment="center"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/LineChart3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LineChart2"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintTop_toBottomOf="@+id/LineChart3" />
 
     <TextView
         android:id="@+id/sensor1_status"
         android:layout_width="190dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="39dp"
-        android:layout_marginBottom="24dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="12dp"
         android:tag="t1"
         android:text="sensor1_status"
         android:textAlignment="center"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/LineChart4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LineChart1"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/LineChart4" />
 
     <TextView
         android:id="@+id/sensor4_status"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="28dp"
         android:tag="t4"
         android:text="sensor4_status"
         android:textAlignment="center"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LineChart4"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/sensor2_status" />
 
     <TextView
         android:id="@+id/sensor3_status"
         android:layout_width="190dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:tag="t3"
         android:text="sensor3_status"
         android:textAlignment="center"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LineChart3"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/sensor1_status" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

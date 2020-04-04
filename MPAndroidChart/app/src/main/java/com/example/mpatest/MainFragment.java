@@ -45,7 +45,6 @@ public class MainFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         chart_count=this.getArguments().getInt("chart_count");
         now_device_status=getView().findViewById(R.id.device_status);
-
         now_time=getView().findViewById(R.id.textView);
         for(int i=0;i<chart_count;i++){
             if(i==4){

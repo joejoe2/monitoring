@@ -85,7 +85,7 @@ public class DataWindow {
                         status = "unknown";
                     }
                     //testing status change event
-                    if (!des.getString("pre-status").equals(status) && isknown) {
+                    if (!des.getString("pre-status").equals(status) || !isknown) {
                         msg += "devices" + devicesID + "-" + target + " " + des.getString("pre-status") + " turn to " + status + ",";
                         des.put("pre-status", status);
                     }

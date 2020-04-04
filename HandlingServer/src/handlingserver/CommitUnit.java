@@ -8,10 +8,12 @@ package handlingserver;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 import javax.swing.JTextArea;
 
 /**
@@ -41,7 +43,14 @@ public class CommitUnit {
         this.recordLog = recordLog;
         
         //ignore host name check, just verify certificate
-        HttpsURLConnection.setDefaultHostnameVerifier ((hostname, session) -> true);
+        try {
+            SSLContext sslcontext = SSLContext.getInstance("TLS");
+            sslcontext.init(null, new MyX509TrustManager[]{new MyX509TrustManager()}, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultHostnameVerifier ((hostname, session) -> true);
+            HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
+        } catch (Exception ex) {
+            Logger.getLogger(CommitUnit.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
