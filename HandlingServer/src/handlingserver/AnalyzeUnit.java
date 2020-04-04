@@ -54,11 +54,14 @@ public class AnalyzeUnit {
                     //get evaluated result
                     String result = window.evaluate(dataIN.substring(dataIN.indexOf("obj=") + 4), !dataIN.contains("unavailable"));
                     msg = result.split("&")[1].split("=")[1];
+                    System.out.println(msg);
                     dataIN = dataIN.substring(0, dataIN.indexOf("obj=") + 4) + result.split("&")[0];
 
                     //send data , msg
                     commitUnit.add(dataIN, msg);
                     break;
+                }else{
+                    //console.append("error match for "+ID+"\n");
                 }
             }
 

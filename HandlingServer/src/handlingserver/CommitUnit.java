@@ -8,10 +8,12 @@ package handlingserver;
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
 import javax.swing.JTextArea;
 
 /**
@@ -41,7 +43,14 @@ public class CommitUnit {
         this.recordLog = recordLog;
         
         //ignore host name check, just verify certificate
-        HttpsURLConnection.setDefaultHostnameVerifier ((hostname, session) -> true);
+        try {
+            SSLContext sslcontext = SSLContext.getInstance("TLS");
+            sslcontext.init(null, new MyX509TrustManager[]{new MyX509TrustManager()}, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultHostnameVerifier ((hostname, session) -> true);
+            HttpsURLConnection.setDefaultSSLSocketFactory(sslcontext.getSocketFactory());
+        } catch (Exception ex) {
+            Logger.getLogger(CommitUnit.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -54,7 +63,7 @@ public class CommitUnit {
      * @param firebase addr
      * @param defaultstr init cfg array
      */
-    public void bind(String webserver, String db, String bot, String botkey, String firebase, String[] defaultstr) {
+    public void bind(String webserver, String db, String bot, String botkey, String firebase, String[] defaultstr, String[] infoStr) {
         //bind net address and start working
         this.webserver = webserver;
         this.db = db;
@@ -65,10 +74,10 @@ public class CommitUnit {
 
         //update cfg
         Pool.execute(() -> {
-            update_db_cfg(defaultstr);
+            update_db_cfg(defaultstr, infoStr);
         });
         Pool.execute(() -> {
-            update_websever_cfg(defaultstr);
+            update_websever_cfg(defaultstr, infoStr);
         });
     }
 
@@ -99,7 +108,7 @@ public class CommitUnit {
      *
      * @param String[] data is a default string array
      */
-    void update_websever_cfg(String[] data) {
+    void update_websever_cfg(String[] data, String[] info) {
         //if adress is empty => return directly
         if (webserver.equals("")) {
             return;
@@ -122,7 +131,8 @@ public class CommitUnit {
         //update progress holder
         int index = 0;
         //update devices cfg
-        for (String cfg : data) {
+        for (int i=0;i<data.length;i++) {
+            String cfg = data[i]+"&"+info[i];
             try {
                 URL obj = new URL(webserver + "/set_devices_cfg.php");
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -153,7 +163,7 @@ public class CommitUnit {
      *
      * @param String[] data is a default string array
      */
-    void update_db_cfg(String[] data) {
+    void update_db_cfg(String[] data, String[] info) {
         //if adress is empty => return directly
         if (db.equals("")) {
             return;
@@ -176,7 +186,8 @@ public class CommitUnit {
         //update progress holder
         int index = 0;
         //update devices cfg
-        for (String cfg : data) {
+       for (int i=0;i<data.length;i++) {
+            String cfg = data[i]+"&"+info[i];
             try {
                 URL obj = new URL(db + "/set_devices_cfg.php");
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();

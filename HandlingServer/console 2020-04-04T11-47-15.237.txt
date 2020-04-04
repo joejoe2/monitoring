@@ -1,0 +1,9 @@
+Receiver start at 2020-04-04T11:47:16.016
+Processor start at 2020-04-04T11:47:16.022
+AnalyzeUnit start at 2020-04-04T11:47:16.022
+CommitUnit start at 2020-04-04T11:47:16.025
+target=devices01 is no response at 2020-04-04T11:47:36.019
+target=devices02 is no response at 2020-04-04T11:47:36.022
+to firebase => [devices02-sensor01 normal turn to unknown,devices02-sensor02 normal turn to unknown] wtih response code=200
+to firebase => [devices01-sensor01 normal turn to unknown,devices01-sensor02 normal turn to unknown] wtih response code=200
+server try to stop at 2020-04-04T11:47:40.165

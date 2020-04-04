@@ -53,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     int tabCount=4;
     final Handler handler = new Handler();
-    static enum CFG_FIELD{DEV_ID_FIELD,DEV_ID_NUM_FIELD,VAL_FIELD};
+    static enum CFG_FIELD{DEV_ID_FIELD,DEV_ID_NUM_FIELD,VAL_FIELD,INFO_FIELD};
     static enum DATA_FIELD{DEV_IDNUM_FIELD,DEV_STATUS_FIELD,TIME_FIELD,DEV_VAL_FIELD};
-    String cfg_link="https://showdata.nctu.me/webserver/get_devices_cfg.php";
-    String data_link="https://showdata.nctu.me/webserver/testjson.php?target=";
+    String cfg_link="http://showdata.nctu.me/webserver/get_devices_cfg.php";
+    String data_link="http://showdata.nctu.me/webserver/testjson.php?target=";
     MyAdapter adapter;
     int dev_size;
     JSONArray retre_list;
@@ -156,9 +156,10 @@ public class MainActivity extends AppCompatActivity {
                 tabCount=dev_size;
                 adapter = new MyAdapter(this,getSupportFragmentManager(), tabCount);
                 for (int i = 0; i < dev_size; i++) {
-                    //System.out.println(array.get(i));
                     JSONArray device=(JSONArray)array.get(i);
                     String dev_id=device.getString(CFG_FIELD.DEV_ID_FIELD.ordinal());
+                    String dev_info=device.getString(CFG_FIELD.INFO_FIELD.ordinal());
+
                     retre_list.put(i, dev_id);
                     System.out.println(dev_id+" "+device.get(CFG_FIELD.DEV_ID_NUM_FIELD.ordinal()));
                     JSONArray sensor=new JSONArray(device.getString(CFG_FIELD.VAL_FIELD.ordinal()));
