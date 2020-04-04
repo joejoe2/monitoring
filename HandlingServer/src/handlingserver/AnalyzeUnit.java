@@ -59,6 +59,8 @@ public class AnalyzeUnit {
                     //send data , msg
                     commitUnit.add(dataIN, msg);
                     break;
+                }else{
+                    console.append("error match for "+ID+"\n");
                 }
             }
 

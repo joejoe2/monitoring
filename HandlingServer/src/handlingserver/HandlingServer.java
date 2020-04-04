@@ -63,7 +63,7 @@ public class HandlingServer extends JFrame {
     CommitUnit commitUnit;
 
     //default value array
-    String[] defaultStr;
+    String[] defaultStr, infoStr;
 
     //analyze list
     ArrayList<DataWindow> windows;
@@ -131,6 +131,7 @@ public class HandlingServer extends JFrame {
 
         //init default value array
         defaultStr = new String[0];
+        infoStr= new String[0];
 
         //init and setup logging unit
         console = new MyConsole(1000, 50, false);
@@ -174,7 +175,7 @@ public class HandlingServer extends JFrame {
         receiver.bind(processor);
         processor.bind(analyzeUnit);
         analyzeUnit.bind(commitUnit);
-        commitUnit.bind(webserver, db, bot, botkey, firebase, defaultStr);
+        commitUnit.bind(webserver, db, bot, botkey, firebase, defaultStr, infoStr);
     }
 
     public void start_with_gui() {
@@ -183,7 +184,7 @@ public class HandlingServer extends JFrame {
 
         //init default value array
         defaultStr = new String[0];
-
+        infoStr = new String[0];
         //set up webserver label
         webserver_label = new JLabel("webserver address : ");
         webserver_label.setSize(150, 25);
@@ -355,6 +356,7 @@ public class HandlingServer extends JFrame {
             Scanner scanner = new Scanner(file);
             ArrayList<String> list = new ArrayList<>();
             ArrayList<String> dw = new ArrayList<>();
+            ArrayList<String> h = new ArrayList<>();
             ArrayList<DataWindow> window = new ArrayList<>();
             DataWindow holder = null;
             int num = 0;
@@ -370,6 +372,8 @@ public class HandlingServer extends JFrame {
                     holder = null;
                     num = 0;
                     dw.clear();
+                } else if (de.startsWith("info=")) {
+                    h.add(de);
                 } else if (de.startsWith("devices")) {
                     id = de.substring("devices".length());
                 } else if (de.startsWith("sensor")) {
@@ -381,6 +385,7 @@ public class HandlingServer extends JFrame {
             }
             //set default value
             defaultStr = list.toArray(defaultStr);
+            infoStr = h.toArray(infoStr);
             windows = window;
         } catch (Exception ex) {
             Logger.getLogger(HandlingServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -422,7 +427,7 @@ public class HandlingServer extends JFrame {
             receiver.bind(processor);
             processor.bind(analyzeUnit);
             analyzeUnit.bind(commitUnit);
-            commitUnit.bind(webserver, db, bot, botkey, firebase, defaultStr);
+            commitUnit.bind(webserver, db, bot, botkey, firebase, defaultStr, infoStr);
 
             //change start/stop button text
             startBtn.setText("stop server");

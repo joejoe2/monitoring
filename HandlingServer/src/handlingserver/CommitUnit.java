@@ -54,7 +54,7 @@ public class CommitUnit {
      * @param firebase addr
      * @param defaultstr init cfg array
      */
-    public void bind(String webserver, String db, String bot, String botkey, String firebase, String[] defaultstr) {
+    public void bind(String webserver, String db, String bot, String botkey, String firebase, String[] defaultstr, String[] infoStr) {
         //bind net address and start working
         this.webserver = webserver;
         this.db = db;
@@ -65,10 +65,10 @@ public class CommitUnit {
 
         //update cfg
         Pool.execute(() -> {
-            update_db_cfg(defaultstr);
+            update_db_cfg(defaultstr, infoStr);
         });
         Pool.execute(() -> {
-            update_websever_cfg(defaultstr);
+            update_websever_cfg(defaultstr, infoStr);
         });
     }
 
@@ -99,7 +99,7 @@ public class CommitUnit {
      *
      * @param String[] data is a default string array
      */
-    void update_websever_cfg(String[] data) {
+    void update_websever_cfg(String[] data, String[] info) {
         //if adress is empty => return directly
         if (webserver.equals("")) {
             return;
@@ -122,7 +122,8 @@ public class CommitUnit {
         //update progress holder
         int index = 0;
         //update devices cfg
-        for (String cfg : data) {
+        for (int i=0;i<data.length;i++) {
+            String cfg = data[i]+"&"+info[i];
             try {
                 URL obj = new URL(webserver + "/set_devices_cfg.php");
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -153,7 +154,7 @@ public class CommitUnit {
      *
      * @param String[] data is a default string array
      */
-    void update_db_cfg(String[] data) {
+    void update_db_cfg(String[] data, String[] info) {
         //if adress is empty => return directly
         if (db.equals("")) {
             return;
@@ -176,7 +177,8 @@ public class CommitUnit {
         //update progress holder
         int index = 0;
         //update devices cfg
-        for (String cfg : data) {
+       for (int i=0;i<data.length;i++) {
+            String cfg = data[i]+"&"+info[i];
             try {
                 URL obj = new URL(db + "/set_devices_cfg.php");
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
