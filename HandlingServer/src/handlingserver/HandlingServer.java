@@ -31,7 +31,7 @@ public class HandlingServer extends JFrame {
     String analyzeAddr;
     String webserver = "https://showdata.nctu.me/webserver";
     String db = "https://showdata.nctu.me/db";
-    String bot = "http://joejoe2bot.herokuapp.com/kkgmsmepoa54fd9rew2da/2n11td", botkey = "a43fdfvvpefd55";
+    String bot = "https://joejoe2bot.herokuapp.com/kkgmsmepoa54fd9rew2da/2n11td", botkey = "a43fdfvvpefd55";
     String firebase = "AAAAymMbbkU:APA91bFwBX8tIvdPm2Q6k44gveOD-Dl6gxjS0YpJQNCB8CegNBRQaJexWczwGdphQ_2sRyrR8LtisLO3dL8zXGFVEVc_V8xoFnclV9Icf3OXRDeVf2h_yxZ9dap2kZusG63LwEg_W6IK";
 
     //tips label
