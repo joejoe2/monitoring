@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     MyAdapter adapter;
     int dev_size;
     JSONArray retre_list;
-
+    ArrayList<String> id_num_list;
     //下面是通知用
     private NotificationManagerCompat mNotificationManagerCompat;
     public String channel_id="id_0";
@@ -152,6 +152,8 @@ public class MainActivity extends AppCompatActivity {
                 //System.out.println(json);
                 JSONArray array=new JSONArray(json);
                 retre_list=new JSONArray();
+                id_num_list=new ArrayList<>();
+
                 dev_size=array.length();
                 tabCount=dev_size;
                 adapter = new MyAdapter(this,getSupportFragmentManager(), tabCount);
@@ -161,13 +163,15 @@ public class MainActivity extends AppCompatActivity {
                     String dev_info=device.getString(CFG_FIELD.INFO_FIELD.ordinal());
 
                     retre_list.put(i, dev_id);
-                    System.out.println(dev_id+" "+device.get(CFG_FIELD.DEV_ID_NUM_FIELD.ordinal()));
+                    id_num_list.add(i, device.getString(CFG_FIELD.DEV_ID_NUM_FIELD.ordinal()));
+
                     JSONArray sensor=new JSONArray(device.getString(CFG_FIELD.VAL_FIELD.ordinal()));
                     int sen_size=sensor.length();
 
                     MainFragment tab=new MainFragment();
                     Bundle bundle=new Bundle();
                     bundle.putInt("chart_count",sen_size);
+                    bundle.putString("info",dev_info);
                     tab.setArguments(bundle);
                     adapter.allfrag.add(tab);
 
@@ -187,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
 
                 MainActivity.this.runOnUiThread(() -> {
                     setup_cfg();
-
                 });
             }catch(Exception ex){
                     ex.printStackTrace();
@@ -197,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setup_cfg(){
         for(int i=0;i<tabCount;i++){
-            tabLayout.addTab(tabLayout.newTab().setText("ID"+i));
+            tabLayout.addTab(tabLayout.newTab().setText("ID"+id_num_list.get(i)));
         }
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
