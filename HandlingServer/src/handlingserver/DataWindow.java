@@ -64,29 +64,35 @@ public class DataWindow {
         String msg = "[";
         for (int i = 0; i < sensorNum; i++) {//input data
             JSONObject obj = ar.getJSONObject(i);
-            String status = "";
+            String status = "", st = "";
             String target = obj.getString("id");
             for (JSONObject des : sensors) {//elvaluae if defined
                 if (des.getString("id").equals(target)) {
                     if (isknown) {
                         float value = obj.getFloat("value");
                         if (value > Float.parseFloat(des.getString("hdanger"))) {
-                            status = "hdanger(" + value + ">" + Float.parseFloat(des.getString("hdanger")) + ")";
+                            st = "hdanger(" + value + ">" + Float.parseFloat(des.getString("hdanger")) + ")";
+                            status="hdanger";
                         } else if (value > Float.parseFloat(des.getString("hwarn"))) {
-                            status = "hwarn(" + value + ">" + Float.parseFloat(des.getString("hwarn")) + ")";
+                            st = "hwarn(" + value + ">" + Float.parseFloat(des.getString("hwarn")) + ")";
+                            status="hwarn";
                         } else if (value < Float.parseFloat(des.getString("ldanger"))) {
-                            status = "ldanger(" + value + "<" + Float.parseFloat(des.getString("ldanger")) + ")";
+                            st = "ldanger(" + value + "<" + Float.parseFloat(des.getString("ldanger")) + ")";
+                            status="ldanger";
                         } else if (value < Float.parseFloat(des.getString("lwarn"))) {
-                            status = "lwarn(" + value + "<" + Float.parseFloat(des.getString("lwarn")) + ")";
+                            st = "lwarn(" + value + "<" + Float.parseFloat(des.getString("lwarn")) + ")";
+                            status="lwarn";
                         } else {
+                            st="normal(" + value  + ")";
                             status = "normal";
                         }
                     } else {
-                        status = "unknown";
+                        st = "unknown";
+                        status=st;
                     }
                     //testing status change event
                     if (!des.getString("pre-status").equals(status) || !isknown) {
-                        msg += "devices" + devicesID + "-" + target + " " + des.getString("pre-status") + " turn to " + status + ",";
+                        msg += "devices" + devicesID + "-" + target + " " + des.getString("pre-status") + " turn to " + st + ",";
                         des.put("pre-status", status);
                     }
 
