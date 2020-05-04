@@ -172,8 +172,6 @@ public class MainActivity extends AppCompatActivity {
                     Bundle bundle=new Bundle();
                     bundle.putInt("chart_count",sen_size);
                     bundle.putString("info",dev_info);
-                    tab.setArguments(bundle);
-                    adapter.allfrag.add(tab);
 
                     for (int j = 0; j < sen_size; j++) {
                         JSONObject obj=sensor.getJSONObject(j);
@@ -185,7 +183,13 @@ public class MainActivity extends AppCompatActivity {
                         sen_status=obj.getString("status");
                         sen_val=obj.getDouble("value");
                         System.out.println(sen_id+" "+sen_type+" "+sen_val);
+
+                        bundle.putString("t"+(j+1),sen_type);
                     }
+
+                    tab.setArguments(bundle);
+                    adapter.allfrag.add(tab);
+
                 }
 
 

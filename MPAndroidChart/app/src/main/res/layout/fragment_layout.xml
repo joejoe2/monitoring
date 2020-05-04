@@ -12,6 +12,42 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.15" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="t2"
+        app:layout_constraintEnd_toEndOf="@+id/LineChart2"
+        app:layout_constraintStart_toStartOf="@+id/LineChart2"
+        app:layout_constraintTop_toTopOf="@+id/guideline1" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="t1"
+        app:layout_constraintEnd_toEndOf="@+id/LineChart1"
+        app:layout_constraintStart_toStartOf="@+id/LineChart1"
+        app:layout_constraintTop_toTopOf="@+id/guideline1" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="t3"
+        app:layout_constraintEnd_toEndOf="@+id/LineChart3"
+        app:layout_constraintStart_toStartOf="@+id/LineChart3"
+        app:layout_constraintTop_toTopOf="@+id/LineChart3" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="t4"
+        app:layout_constraintEnd_toEndOf="@+id/LineChart4"
+        app:layout_constraintStart_toStartOf="@+id/LineChart4"
+        app:layout_constraintTop_toTopOf="@+id/LineChart4" />
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/LineChart1"
         android:layout_width="160dp"
@@ -34,7 +70,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline1" />
+        app:layout_constraintTop_toTopOf="@+id/guideline1" >
+
+    </com.github.mikephil.charting.charts.LineChart>
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/LineChart3"
