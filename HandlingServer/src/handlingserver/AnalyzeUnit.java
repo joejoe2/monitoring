@@ -49,6 +49,8 @@ public class AnalyzeUnit {
             String dataIN = data;
             String ID = dataIN.substring(dataIN.indexOf("devicesid=") + 10, dataIN.indexOf("&status"));
             String msg = "";
+            boolean flag=false;
+            
             for (DataWindow window : windows) {
                 if (window.devicesID.equals(ID)) {//if match defined
                     //get evaluated result
@@ -59,11 +61,14 @@ public class AnalyzeUnit {
 
                     //send data , msg
                     commitUnit.add(dataIN, msg);
+                    flag=true;
                     break;
-                }else{
-                    //console.append("error match for "+ID+"\n");
                 }
             }
+            if(flag==false){
+                console.append("error match for id: "+ID+"\n");
+            }
+            
 
     }
 }
