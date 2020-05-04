@@ -31,7 +31,7 @@ public class HandlingServer extends JFrame {
     String analyzeAddr;
     String webserver = "https://showdata.nctu.me/webserver";
     String db = "https://showdata.nctu.me/db";
-    String bot = "http://joejoe2bot.herokuapp.com/kkgmsmepoa54fd9rew2da/2n11td", botkey = "a43fdfvvpefd55";
+    String bot = "https://joejoe2bot.herokuapp.com/kkgmsmepoa54fd9rew2da/2n11td", botkey = "a43fdfvvpefd55";
     String firebase = "AAAAymMbbkU:APA91bFwBX8tIvdPm2Q6k44gveOD-Dl6gxjS0YpJQNCB8CegNBRQaJexWczwGdphQ_2sRyrR8LtisLO3dL8zXGFVEVc_V8xoFnclV9Icf3OXRDeVf2h_yxZ9dap2kZusG63LwEg_W6IK";
 
     //tips label
@@ -78,34 +78,35 @@ public class HandlingServer extends JFrame {
      */
     public static void main(String[] args) {
 
-        String w="",d="",b="",f="";
-        boolean is_gui=true;
-        
-        if(args.length==0)
-            is_gui=true;
-        else if("-g".equals(args[0]))
-            is_gui=true;
-        else if("-c".equals(args[0]))
-            is_gui=false;
-        
-        for(int i=1;i<args.length;i++){
-            if("-w".equals(args[i])){
-                w=args[i+1];
-            }else if("-d".equals(args[i])){
-                d=args[i+1];
-            }else if("-b".equals(args[i])){
-                b=args[i+1];
-            }else if("-f".equals(args[i])){
-                f=args[i+1];
+        String w = "", d = "", b = "", f = "";
+        boolean is_gui = true;
+
+        if (args.length == 0) {
+            is_gui = true;
+        } else if ("-g".equals(args[0])) {
+            is_gui = true;
+        } else if ("-c".equals(args[0])) {
+            is_gui = false;
+        }
+
+        for (int i = 1; i < args.length; i++) {
+            if ("-w".equals(args[i])) {
+                w = args[i + 1];
+            } else if ("-d".equals(args[i])) {
+                d = args[i + 1];
+            } else if ("-b".equals(args[i])) {
+                b = args[i + 1];
+            } else if ("-f".equals(args[i])) {
+                f = args[i + 1];
             }
         }
-        
+
         // create server obj
         HandlingServer handlingServer = new HandlingServer();
-        
-        if(is_gui){
+
+        if (is_gui) {
             handlingServer.start_with_gui();
-        }else{
+        } else {
             handlingServer.start_without_gui(w, d, b, f);
         }
 
@@ -131,7 +132,7 @@ public class HandlingServer extends JFrame {
 
         //init default value array
         defaultStr = new String[0];
-        infoStr= new String[0];
+        infoStr = new String[0];
 
         //init and setup logging unit
         console = new MyConsole(1000, 50, false);
@@ -150,7 +151,7 @@ public class HandlingServer extends JFrame {
                 console.append("server try to stop at " + LocalDateTime.now() + "\n");
                 console.stopLog();
                 recordLog.stopLog();
-                
+
                 System.out.println("exit");
             }
         }));
@@ -379,6 +380,8 @@ public class HandlingServer extends JFrame {
                 } else if (de.startsWith("sensor")) {
                     num++;
                     dw.add(de);
+                } else if (de.startsWith("##")) {
+                    break;
                 } else {
                     dw.add(de);
                 }

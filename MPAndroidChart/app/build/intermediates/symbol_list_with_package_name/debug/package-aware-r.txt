@@ -1228,6 +1228,10 @@ id ghost_view
 id gone
 id group_divider
 id groups
+id guideline1
+id guideline3
+id guideline4
+id guideline5
 id home
 id homeAsUp
 id icon

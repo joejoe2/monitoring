@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class MainFragment extends Fragment {
 
     int chart_count;
-    TextView now_time;
+    TextView now_time,info;
     LocalDateTime last_time=null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,9 +43,15 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         chart_count=this.getArguments().getInt("chart_count");
+        String dev_info=this.getArguments().getString("info");
+
         now_device_status=getView().findViewById(R.id.device_status);
         now_time=getView().findViewById(R.id.textView);
+        info=getView().findViewById(R.id.info);
+
+        info.setText(dev_info);
         for(int i=0;i<chart_count;i++){
             if(i==4){
                 break;

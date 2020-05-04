@@ -5,7 +5,9 @@
  */
 package handlingserver;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -256,7 +258,27 @@ public class CommitUnit {
         if (bot.equals("") || data.equals("[]")) {
             return;
         }
+        
+        //send data
+        try {
+            URL obj = new URL(bot);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setConnectTimeout(60000);
+            //add post header
+            con.setRequestMethod("POST");
 
+            //send post header
+            con.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.writeBytes(data+"&k="+botkey);
+            wr.flush();
+            wr.close();
+
+            int responseCode = con.getResponseCode();
+            console.append("to bot => " + data.split("&")[0] + " at " + LocalDateTime.now() + " wtih response code=" + responseCode + "\n");
+        } catch (Exception ex) {
+            console.append(ex + "\n");
+        }
     }
 
     /**
