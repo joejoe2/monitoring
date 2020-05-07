@@ -117,18 +117,18 @@ public class CommitUnit {
         }
 
         //clear clear devices cfg
-        try {
-            URL obj = new URL(webserver + "/clear_devices_cfg.php");
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setConnectTimeout(5000);
-            //add post header
-            con.setRequestMethod("POST");
-            int responseCode = con.getResponseCode();
-            console.append("init websever cfg at " + LocalDateTime.now() + " wtih response code=" + responseCode + "\n");
-        } catch (Exception ex) {
-            console.append(ex + "\n");
-            return;
-        }
+//        try {
+//            URL obj = new URL(webserver + "/clear_devices_cfg.php");
+//            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+//            con.setConnectTimeout(5000);
+//            //add post header
+//            con.setRequestMethod("POST");
+//            int responseCode = con.getResponseCode();
+//            console.append("init websever cfg at " + LocalDateTime.now() + " wtih response code=" + responseCode + "\n");
+//        } catch (Exception ex) {
+//            console.append(ex + "\n");
+//            return;
+//        }
 
         //update progress holder
         int index = 0;
@@ -172,18 +172,18 @@ public class CommitUnit {
         }
 
         //clear devices cfg
-        try {
-            URL obj = new URL(db + "/clear_devices_cfg.php");
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setConnectTimeout(5000);
-            //add post header
-            con.setRequestMethod("POST");
-            int responseCode = con.getResponseCode();
-            console.append("init db cfg at " + LocalDateTime.now() + " wtih response code=" + responseCode + "\n");
-        } catch (Exception ex) {
-            console.append(ex + "\n");
-            return;
-        }
+//        try {
+//            URL obj = new URL(db + "/clear_devices_cfg.php");
+//            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+//            con.setConnectTimeout(5000);
+//            //add post header
+//            con.setRequestMethod("POST");
+//            int responseCode = con.getResponseCode();
+//            console.append("init db cfg at " + LocalDateTime.now() + " wtih response code=" + responseCode + "\n");
+//        } catch (Exception ex) {
+//            console.append(ex + "\n");
+//            return;
+//        }
 
         //update progress holder
         int index = 0;
