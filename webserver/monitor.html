@@ -136,7 +136,7 @@
 
         document.addEventListener('mousewheel', function (event) {
             event.preventDefault();
-            let is_down = event.wheelDelta < 0;
+            let is_down = event.wheelDelta > 0;
             if (is_down) {
                 current--;
                 if (current < 0) {
