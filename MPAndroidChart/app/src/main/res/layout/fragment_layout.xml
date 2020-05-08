@@ -95,7 +95,7 @@
         android:layout_width="7dp"
         android:layout_height="14dp"
         android:layout_marginTop="1dp"
-        android:tag="t4"
+        android:tag="ti4"
         app:layout_constraintEnd_toEndOf="@+id/LineChart4"
         app:layout_constraintStart_toStartOf="@+id/LineChart4"
         app:layout_constraintTop_toTopOf="@+id/LineChart4" />
@@ -105,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:tag="t3"
+        android:tag="ti3"
         app:layout_constraintEnd_toEndOf="@+id/LineChart3"
         app:layout_constraintStart_toStartOf="@+id/LineChart3"
         app:layout_constraintTop_toTopOf="@+id/LineChart3" />
@@ -116,7 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:tag="t1"
+        android:tag="ti1"
         app:layout_constraintEnd_toEndOf="@+id/LineChart1"
         app:layout_constraintStart_toStartOf="@+id/LineChart1"
         app:layout_constraintTop_toTopOf="@+id/LineChart1" />
@@ -125,7 +125,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:tag="t2"
+        android:tag="ti2"
         app:layout_constraintEnd_toEndOf="@+id/LineChart2"
         app:layout_constraintStart_toStartOf="@+id/LineChart2"
         app:layout_constraintTop_toTopOf="@+id/LineChart2" />

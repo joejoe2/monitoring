@@ -58,7 +58,7 @@ public class MainFragment extends Fragment {
             }
             LineChart mChart;
             mChart=getView().findViewWithTag("l"+(i+1));
-            TextView ty = getView().findViewWithTag("t"+(i+1));
+            TextView ty = getView().findViewWithTag("ti"+(i+1));
             ty.setText(this.getArguments().getString("t"+(i+1), ""));
             initChart(mChart);
             chartlist.add(mChart);
