@@ -12,65 +12,27 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.15" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:tag="t2"
-        app:layout_constraintEnd_toEndOf="@+id/LineChart2"
-        app:layout_constraintStart_toStartOf="@+id/LineChart2"
-        app:layout_constraintTop_toTopOf="@+id/guideline1" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:tag="t1"
-        app:layout_constraintEnd_toEndOf="@+id/LineChart1"
-        app:layout_constraintStart_toStartOf="@+id/LineChart1"
-        app:layout_constraintTop_toTopOf="@+id/guideline1" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:tag="t3"
-        app:layout_constraintEnd_toEndOf="@+id/LineChart3"
-        app:layout_constraintStart_toStartOf="@+id/LineChart3"
-        app:layout_constraintTop_toTopOf="@+id/LineChart3" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:tag="t4"
-        app:layout_constraintEnd_toEndOf="@+id/LineChart4"
-        app:layout_constraintStart_toStartOf="@+id/LineChart4"
-        app:layout_constraintTop_toTopOf="@+id/LineChart4" />
-
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/LineChart1"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginEnd="28dp"
         android:tag="l1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.063"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="@+id/guideline1">
 
     </com.github.mikephil.charting.charts.LineChart>
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/LineChart2"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="159dp"
+        android:layout_height="158dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginEnd="44dp"
         android:tag="l2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline1" >
+        app:layout_constraintTop_toTopOf="@+id/guideline1">
 
     </com.github.mikephil.charting.charts.LineChart>
 
@@ -79,10 +41,10 @@
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="28dp"
         android:tag="l3"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/LineChart1"
         app:layout_constraintVertical_bias="1.0">
 
@@ -100,6 +62,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/LineChart4"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="40dp"
+        android:tag="l4"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LineChart2"
+        app:layout_constraintVertical_bias="1.0" />
+
     <TextView
         android:id="@+id/device_status"
         android:layout_width="0dp"
@@ -114,6 +89,46 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.666" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="7dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="1dp"
+        android:tag="ti4"
+        app:layout_constraintEnd_toEndOf="@+id/LineChart4"
+        app:layout_constraintStart_toStartOf="@+id/LineChart4"
+        app:layout_constraintTop_toTopOf="@+id/LineChart4" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:tag="ti3"
+        app:layout_constraintEnd_toEndOf="@+id/LineChart3"
+        app:layout_constraintStart_toStartOf="@+id/LineChart3"
+        app:layout_constraintTop_toTopOf="@+id/LineChart3" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:tag="ti1"
+        app:layout_constraintEnd_toEndOf="@+id/LineChart1"
+        app:layout_constraintStart_toStartOf="@+id/LineChart1"
+        app:layout_constraintTop_toTopOf="@+id/LineChart1" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tag="ti2"
+        app:layout_constraintEnd_toEndOf="@+id/LineChart2"
+        app:layout_constraintStart_toStartOf="@+id/LineChart2"
+        app:layout_constraintTop_toTopOf="@+id/LineChart2" />
 
     <TextView
         android:id="@+id/sensor2_status"
@@ -192,20 +207,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/LineChart4"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="28dp"
-        android:tag="l4"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/LineChart2"
-        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"

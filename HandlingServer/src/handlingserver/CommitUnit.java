@@ -135,6 +135,7 @@ public class CommitUnit {
         //update devices cfg
         for (int i=0;i<data.length;i++) {
             String cfg = data[i]+"&"+info[i];
+
             try {
                 URL obj = new URL(webserver + "/set_devices_cfg.php");
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -190,6 +191,7 @@ public class CommitUnit {
         //update devices cfg
        for (int i=0;i<data.length;i++) {
             String cfg = data[i]+"&"+info[i];
+            
             try {
                 URL obj = new URL(db + "/set_devices_cfg.php");
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
