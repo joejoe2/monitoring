@@ -44,7 +44,7 @@ public class Receiver {
     String[] pre;
     String[] next;
     Timer checker;
-    int timeout = 10000;//10s
+    int timeout = 20000;//20s
 
     //accept regx pattern
     String pattern = "target=devices[0-9]+&devicesid=[0-9]+&status=.+&time=.+&obj=.+";

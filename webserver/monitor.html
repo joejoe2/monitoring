@@ -41,10 +41,21 @@
             background-color: white;
         }
 
+        .title {
+            background-color: white;
+            text-align: center
+        }
+
     </style>
 </head>
 
 <body>
+    <div class="unit">
+        <h1 class="title">
+            monitoring panel
+        </h1>
+    </div>
+    
     <div id="d">
         <transition-group appear appear-active-class="fade-enter-active">
             <div v-for="(item,index) in list" :key="item.id" :id="item.id" :title="item.title"
@@ -87,11 +98,13 @@
         let getcfg = "get_devices_cfg.php";
 
         let normalColor = '#80CAF6';
-        let wraningColor = "red";
+        let wraningColor = "yellow";
+        let dangerColor = "red";
         let unknown = 0;//unknown value
         let timeout = 10000;//10s
 
         let divlist = [];//div generator array
+        let infoset = [];//info list
 
         //get webserver config
         var request = new XMLHttpRequest();
@@ -106,6 +119,7 @@
         
         //init arrays
         for (let index = 0; index < cfg.length; index++) {
+            infoset[index] =  cfg[index][3];
             divlist[index] = { id: "d" + cfg[index][1], title: cfg[index][0] }
             cfg[index][2] = JSON.parse(cfg[index][2]);
         }
@@ -160,12 +174,15 @@
             //devices
             {
                 let sensorNum = cfg[index][2].length;//sensor num
-                let delay = 5000;//refresh rate in ms
+                let delay = 2500;//refresh rate in ms
                 let tarray = new Array();//time array
                 let darray = new Array();//data array
                 let txtarray = new Array();//text array
                 let graphSet = [];
                 let titleSet = [];
+                let typeset = [];
+                let info=infoset[index];
+
                 let pastLimit = 100;//how many points can look back
                 let target = div.title;
                 let now = new Date();
@@ -177,8 +194,10 @@
                     div.children[n].id = divlist[index].id + div.children[n].id;
                     graphSet[i] = div.children[n].id;
                     titleSet[i] = div.title + "-" + cfg[index][2][i].id;
+                    typeset[i] = cfg[index][2][i].type;
                 }
 
+                div.title = infoset[index];
                 //initialize plotly.js
                 let data = [{
                     x: [now],
@@ -196,6 +215,7 @@
                     let layout = {
                         title: titleSet[i]
                     };
+                    
                     Plotly.plot(graphSet[i], data, layout);
                 }
 
@@ -231,7 +251,7 @@
                                     //append new data
                                     let value = obj[i].value;
                                     if (value == "unknown") {
-                                        value = unknown
+                                        value = unknown;
                                     }
                                     tarray[i].unshift(time);
                                     darray[i].unshift(value);
@@ -257,12 +277,17 @@
                                     let minuteView = {
 
                                         'yaxis.range': [min - dif, max + dif],
-                                        'yaxis.title': obj[i].type,
+                                        'yaxis.title': typeset[i],
                                         xaxis: {
                                             type: 'date',
                                             range: [olderTime, futureTime]
                                         },
-                                        title: titleSet[i] + "<br>" + (devicesstatus == "unavailable" ? devicesstatus : (obj[i].status))
+                                        title: {
+                                            text: titleSet[i] + "<br>" + (devicesstatus == "unavailable" ? devicesstatus : (obj[i].status.endsWith("danger") ? "danger" : obj[i].status.endsWith("warn") ? "warning" : obj[i].status)),
+                                            font:{
+                                                color: obj[i].status.endsWith("danger") ? dangerColor : obj[i].status.endsWith("warn") ? wraningColor : "black"
+                                            }
+                                        }
                                     }
                                     //set view point and update data
                                     Plotly.relayout(graphSet[i], minuteView);
