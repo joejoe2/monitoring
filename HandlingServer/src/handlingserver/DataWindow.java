@@ -55,7 +55,7 @@ public class DataWindow {
  * else if some sensor is defined but missing in arg data, it will be skip too<br>
  * return concated(by '&') obj_json string and msg=[a,b,c...], the [] means none ,otherwise split by "," notation 
  * @param data data to be evaluated
- * @param isknown the data is unvailabe one or not
+ * @param isknown the data is unvailabe or not
  * @return string "obj_json_strformat&msg=[a,b,c,...]";
  */
     public synchronized String evaluate(String data, boolean isknown) {
@@ -90,8 +90,8 @@ public class DataWindow {
                         st = "unknown";
                         status=st;
                     }
-                    //testing status change event
-                    if (!des.getString("pre-status").equals(status) || !isknown) {
+                    //status change event
+                    if (!des.getString("pre-status").equals(status)) {
                         msg += "devices" + devicesID + "-" + target + " " + des.getString("pre-status") + " turn to " + st + ",";
                         des.put("pre-status", status);
                     }
