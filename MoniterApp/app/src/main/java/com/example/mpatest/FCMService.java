@@ -84,14 +84,16 @@ public class FCMService extends FirebaseMessagingService {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channel_id);
+        Notification.Builder builder = new Notification.Builder(this, channel_id);
+        Notification.BigTextStyle b =new Notification.BigTextStyle();
+        b.setBigContentTitle("warning !");
+        b.bigText(context);
         builder.setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("My notification")
+                .setContentTitle("warning !")
                 .setContentText(context)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(mainPendingIntent)
-                .setAutoCancel(true);
+                .setAutoCancel(true).setStyle(b);
 
         Notification notify=builder.build();
 
